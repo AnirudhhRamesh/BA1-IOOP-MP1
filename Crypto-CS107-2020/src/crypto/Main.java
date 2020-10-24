@@ -40,7 +40,7 @@ public class Main {
 	
 	
 	//Run the Encoding and Decoding using the caesar pattern 
-	public static void testCaesar(byte[] string , byte key) {
+	public static void testCaesar(byte[] string , byte key) {		
 		//Encoding
 		byte[] result = Encrypt.caesar(string, key);
 		String s = bytesToString(result);
