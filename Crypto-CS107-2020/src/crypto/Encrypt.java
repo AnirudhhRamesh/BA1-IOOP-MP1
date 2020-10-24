@@ -29,8 +29,24 @@ public class Encrypt {
 	public static String encrypt(String message, String key, int type) {
 		// TODO: COMPLETE THIS METHOD
 		
-		//Thisergdhfvydgxvdsnivnsib
-		
+		while ((type < 0)||(type > 4)){
+			System.out.println("Please enter a type that is within the range of 0-4: 0 = Caesar; 1 = Vigenere; 2 = XOR; 3 = One-time pad; 4 = CBC;");
+		}
+		if (type == CAESAR){
+			//Caesar
+		}
+		else if (type == VIGENERE) {
+			//Vigenere
+		}
+		else if (type == XOR) {
+			//XOR
+		}
+		else if (type == ONETIME) {
+			//One time pad
+		}
+		else if (type == CBC) {
+			//CBC
+		}
 		return null; // TODO: to be modified
 	}
 	
