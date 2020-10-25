@@ -36,10 +36,12 @@ public class Main {
 		
 		System.out.println("------Vigenere------");
 		testVigenere(messageBytes, keyBytes);
-		
 		byte[] vigenereTempKeyTester = {(byte) 1, (byte) 2, (byte) 3};
 		testVigenere(Helper.stringToBytes("bonne journée"), vigenereTempKeyTester);
 
+		System.out.println("------XOR------");
+		testXOR(messageBytes, keyBytes[0]);
+		testXOR(Helper.stringToBytes("bonne journée"), (byte)7);
 		// TODO: TO BE COMPLETED
 	}
 	
@@ -50,12 +52,13 @@ public class Main {
 		byte[] result = Encrypt.caesar(string, key);
 		String s = bytesToString(result);
 		System.out.println("Encoded : " + s);
-		System.out.println();
 
 		//Decoding with key
 		String sD = bytesToString(Encrypt.caesar(result, (byte) (-key)));
 		System.out.println("Decoded knowing the key : " + sD);
 		
+		System.out.println();
+
 		//TODO: BruteForce decoding
 		/*
 		//Decoding without key
@@ -76,7 +79,6 @@ public class Main {
 		byte[] result = Encrypt.vigenere(string, keyword);
 		String s = bytesToString(result);
 		System.out.println("Encoded : " + s);
-		System.out.println(" ");
 		
 		//Decoding with key
 		byte[] keywordInverse = new byte[keyword.length];
@@ -85,6 +87,35 @@ public class Main {
 		}
 		String sD = bytesToString(Encrypt.vigenere(result, keywordInverse));
 		System.out.println("Decoded knowing the key : " + sD);
+		System.out.println(" ");
+
+	}
+	
+	public static void testXOR(byte[] string , byte key) {		
+		//Encoding
+		byte[] result = Encrypt.xor(string, key);
+		String s = bytesToString(result);
+		System.out.println("Encoded : " + s);
+
+		//Decoding with key
+		String sD = bytesToString(Encrypt.xor(result, (byte) (key)));
+		System.out.println("Decoded knowing the key : " + sD);
+		
+		System.out.println();
+
+		//TODO: BruteForce decoding
+		/*
+		//Decoding without key
+		byte[][] bruteForceResult = Decrypt.caesarBruteForce(result);
+		String sDA = Decrypt.arrayToString(bruteForceResult);
+		Helper.writeStringToFile(sDA, "bruteForceCaesar.txt");
+		
+		byte decodingKey = Decrypt.caesarWithFrequencies(result);
+		String sFD = bytesToString(Encrypt.caesar(result, decodingKey));
+		System.out.println("Decoded without knowing the key : " + sFD);
+		*/
+		System.out.println();
+		System.out.println();
 	}
 	
 //TODO : TO BE COMPLETED

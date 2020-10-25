@@ -79,9 +79,9 @@ public class Encrypt {
 				plainText[i] = (byte)(plainText[i] + key);
 			}
 			
-			System.out.print(plainText[i] + " ");
+			//System.out.print(plainText[i] + " ");
 		}
-		System.out.println();
+		//System.out.println();
 
 		return plainText;
 	}
@@ -109,7 +109,17 @@ public class Encrypt {
 	 */
 	public static byte[] xor(byte[] plainText, byte key, boolean spaceEncoding) {
 		// TODO: COMPLETE THIS METHOD
-		return null; // TODO: to be modified
+		for (int i = 0; i < plainText.length; ++i) {
+			//if spaces should not be encoded, checks for non space characters and shifts by key
+			
+			if (isSpace(spaceEncoding, plainText[i])){ 
+				plainText[i] = (byte)(plainText[i] ^ key);
+			}
+			
+			System.out.print(plainText[i] + " ");
+		}
+		
+		return plainText; // TODO: to be modified
 	}
 	/**
 	 * Method to encode a byte array using a XOR with a single byte long key
@@ -118,8 +128,7 @@ public class Encrypt {
 	 * @return an encoded byte array
 	 */
 	public static byte[] xor(byte[] plainText, byte key) {
-		// TODO: COMPLETE THIS METHOD
-		return null; // TODO: to be modified
+		return xor(plainText, key, false); //By default, space will not be encoded for XOR
 	}
 	//-----------------------Vigenere-------------------------
 	
