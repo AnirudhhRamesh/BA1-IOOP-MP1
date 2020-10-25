@@ -74,14 +74,8 @@ public class Encrypt {
 
 		for (int i = 0; i < plainText.length; ++i) {
 			//if spaces should not be encoded, checks for non space characters and shifts by key
-			if(!spaceEncoding) {
-				if (!(isSpace(plainText[i]))){ 
-					plainText[i] = (byte)(plainText[i] + key);
-				}
-			}
 			
-			//if spaces should be encoded, then shifts each character by key
-			else { 
+			if (isSpace(spaceEncoding, plainText[i])){ 
 				plainText[i] = (byte)(plainText[i] + key);
 			}
 			
@@ -138,38 +132,21 @@ public class Encrypt {
 	 * @param spaceEncoding if false, then spaces are not encoded
 	 * @return an encoded byte array 
 	 */
-	public static byte[] vigenere(byte[] plainText, byte[] keyword, boolean spaceEncoding) {
-		// TODO: Modularise this method such that it uses and overload of caesar!
-		//TODO: This code is mostly copy pasted from Caesar. You should create new overload caesar(byte plainChar, byte key, spaceEncoding)
-		
+	public static byte[] vigenere(byte[] plainText, byte[] keyword, boolean spaceEncoding) {		
 		int iteratorIndex = 0;
 		
-		for (byte val: keyword) {
-			System.out.println("keyword byte" + val);
-		}
 		for (int i = 0; i < plainText.length; ++i) {
-			
-			//if spaces should not be encoded, checks for non space characters and shifts by key
-			if(!spaceEncoding) {
-				if (!(isSpace(plainText[i]))){ 
-					plainText[i] = (byte)(plainText[i] + keyword[iteratorIndex]);
-					++iteratorIndex;
-				}
-			}
-			
-			//if spaces should be encoded, then shifts each character by key
-			else { 
-				plainText[i] = (byte)(plainText[i] + keyword[iteratorIndex]);
+			byte[] plainTextContainer = {plainText[i]};			
+			plainText[i] = caesar(plainTextContainer, keyword[iteratorIndex], spaceEncoding)[0];
+
+			if (isSpace(spaceEncoding, plainText[i])) {
 				++iteratorIndex;
 			}
-			
-			System.out.print(plainText[i] + " ");
 			
 			if (iteratorIndex == keyword.length){
 				iteratorIndex = 0;
 			}
 		}
-		System.out.println();
 		
 		return plainText;
 	}
@@ -237,11 +214,15 @@ public class Encrypt {
 
 	
 	/**
-	 * Method used to avoid space encoding where necessary
+	 * Method used to avoid space encoding where necessary. If encoding spaces, then returns true. Else if not encoding spaces, returns false if character is a space.
+	 * @param spaceEncoding if false, then spaces are not encoded
 	 * @param byteValue is the byte that is checked to see whether it represents a space (byte = 32)
 	 */
-	public static boolean isSpace(byte byteValue) {
-		return (byteValue == (byte)(32)); //TODO: to be modified
+	public static boolean isSpace(boolean spaceEncoding, byte byteValue) {
+		if (!spaceEncoding) {
+			return !(byteValue == (byte)(32));
+		}
+		return true;
 	}
 	
 	/**
@@ -251,6 +232,5 @@ public class Encrypt {
 	public static byte keyModulo(byte key) {
 		return (byte)(key%BYTE_RANGE);
 	}
-	
-	
+		
 }
