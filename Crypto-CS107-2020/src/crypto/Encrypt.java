@@ -98,6 +98,7 @@ public class Encrypt {
 		return caesar(plainText, key, false); //By default, space will not be encoded for caesar
 	}
 	
+	
 	//-----------------------XOR-------------------------
 	
 	/**
@@ -108,15 +109,16 @@ public class Encrypt {
 	 * @return an encoded byte array
 	 */
 	public static byte[] xor(byte[] plainText, byte key, boolean spaceEncoding) {
-		// TODO: COMPLETE THIS METHOD
+		assert(plainText != null);
+		
 		for (int i = 0; i < plainText.length; ++i) {
 			//if spaces should not be encoded, checks for non space characters and shifts by key
 			
 			if (isSpace(spaceEncoding, plainText[i])){ 
-				plainText[i] = (byte)(plainText[i] ^ key);
+				plainText[i] = (byte)(plainText[i] ^ keyModulo(key));
 			}
 			
-			System.out.print(plainText[i] + " ");
+			//System.out.print(plainText[i] + " ");
 		}
 		
 		return plainText; // TODO: to be modified
@@ -130,6 +132,8 @@ public class Encrypt {
 	public static byte[] xor(byte[] plainText, byte key) {
 		return xor(plainText, key, false); //By default, space will not be encoded for XOR
 	}
+	
+	
 	//-----------------------Vigenere-------------------------
 	
 	/**
@@ -142,11 +146,12 @@ public class Encrypt {
 	 * @return an encoded byte array 
 	 */
 	public static byte[] vigenere(byte[] plainText, byte[] keyword, boolean spaceEncoding) {		
+		assert(plainText != null);
 		int iteratorIndex = 0;
 		
 		for (int i = 0; i < plainText.length; ++i) {
 			byte[] plainTextContainer = {plainText[i]};			
-			plainText[i] = caesar(plainTextContainer, keyword[iteratorIndex], spaceEncoding)[0];
+			plainText[i] = caesar(plainTextContainer, keyModulo(keyword[iteratorIndex]), spaceEncoding)[0];
 
 			if (isSpace(spaceEncoding, plainText[i])) {
 				++iteratorIndex;
@@ -174,7 +179,6 @@ public class Encrypt {
 	}
 	
 	
-	
 	//-----------------------One Time Pad-------------------------
 	
 	/**
@@ -185,11 +189,20 @@ public class Encrypt {
 	 * @return an encoded byte array
 	 */
 	public static byte[] oneTimePad(byte[] plainText, byte[] pad) {
-		// TODO: COMPLETE THIS METHOD
-		return null; // TODO: to be modified
+		assert(plainText != null);
+		//Verify the pad.length >= plainText.length, else return null
+		if (pad.length < plainText.length) {
+			System.out.println("Error: Failed OTP encoding. Pad length smaller than string length.");
+			return null;
+		}
+		
+		for (int i = 0; i < plainText.length; ++i) {
+			byte[] plainTextContainer = {plainText[i]};			
+			plainText[i] = xor(plainTextContainer, pad[i])[0];
+		}
+		
+		return plainText;
 	}
-	
-	
 	
 	
 	//-----------------------Basic CBC-------------------------
@@ -201,9 +214,45 @@ public class Encrypt {
 	 * @return an encoded byte array
 	 */
 	public static byte[] cbc(byte[] plainText, byte[] iv) {
+		assert(plainText != null);
+
+		int padSize = iv.length;
+		int j = 0;
 		// TODO: COMPLETE THIS METHOD
+		//Decompose message into blocks of the pad size
+		//Pad is randomly generated
+		//XOR Blocks with pad
+		//Just a onetimepad, but you split the string into several blocks that are each the pad size
+		//The string might not always end when the block ends, so be sure to program in terms of string.length and not block.length when iterating through
+		//Verify the pad.length >= plainText.length, else return null
 		
-		return null; // TODO: to be modified
+		//Cipher block chaining is like OneTimePad combined with Vigenere
+		
+		for (int i = 0; i < plainText.length; i+=padSize) {
+			//create blocks of string that are equal to iv.length
+			byte[] blockText = new byte[padSize];
+			blockText[j] = (byte)plainText[i];
+			++j;
+			
+			if (j == padSize - 1) {  //This clearly won't reset the counter to j, you need to set up a separate counter
+				j = 0;
+			}
+			
+			System.out.print(blockText[j] + " ");
+			System.out.println();
+			//Run blocks of string into oneTimePad function
+			
+			//Reiterate through plainText to replace with the encoded oneTimePad values
+			
+			//Make sure you can unencode the file
+		}
+		
+		//plainText = oneTimePad(plainText, iv);
+		
+		
+		
+		
+		return plainText;
 	}
 	
 	
@@ -213,10 +262,12 @@ public class Encrypt {
 	 * @return random bytes in an array
 	 */
 	public static byte[] generatePad(int size) {
-		// TODO: COMPLETE THIS METHOD
-
-		return null; // TODO: to be modified
-
+		//We will use this method to generate a random pad for oneTimePad encryption and cbc encryption
+		//This method will therefore be called into main directly, rather than through the oneTimePad or cbc methods
+		byte[] randomPad = new byte[size];
+		rand.nextBytes(randomPad);
+		
+		return randomPad;
 	}
 	
 	//-----------------------Additional Methods-------------------------
