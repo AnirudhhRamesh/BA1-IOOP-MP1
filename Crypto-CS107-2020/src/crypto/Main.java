@@ -19,29 +19,37 @@ public class Main {
 		
 		String inputMessage = Helper.readStringFromFile("text_one.txt");
 		String key = "2cF%5"; //Value shift is 50
+		String customMessage = "bonne journée";
 		
 		String messageClean = cleanString(inputMessage);
 		
-		
 		byte[] messageBytes = stringToBytes(messageClean);
 		byte[] keyBytes = stringToBytes(key);
-		
 		
 		System.out.println("Original input sanitized : " + messageClean);
 		System.out.println();
 		
 		System.out.println("------Caesar------");
 		testCaesar(messageBytes, keyBytes[0]);
-		testCaesar(Helper.stringToBytes("bonne journée"), (byte)3);
+		testCaesar(Helper.stringToBytes(customMessage), (byte)3);
 		
 		System.out.println("------Vigenere------");
 		testVigenere(messageBytes, keyBytes);
 		byte[] vigenereTempKeyTester = {(byte) 1, (byte) 2, (byte) 3};
-		testVigenere(Helper.stringToBytes("bonne journée"), vigenereTempKeyTester);
+		testVigenere(Helper.stringToBytes(customMessage), vigenereTempKeyTester);
 
 		System.out.println("------XOR------");
 		testXOR(messageBytes, keyBytes[0]);
-		testXOR(Helper.stringToBytes("bonne journée"), (byte)7);
+		testXOR(Helper.stringToBytes(customMessage), (byte)7);
+		
+		System.out.println("------One Time Pad------");
+		testOneTimePad(messageBytes, Encrypt.generatePad(messageBytes.length));
+		testOneTimePad(Helper.stringToBytes(customMessage), Encrypt.generatePad(customMessage.length()));
+		
+		System.out.println("------CBC------");
+		testCBC(messageBytes, Encrypt.generatePad(4));
+		testCBC(Helper.stringToBytes(customMessage), Encrypt.generatePad(4));
+		
 		// TODO: TO BE COMPLETED
 	}
 	
@@ -87,7 +95,7 @@ public class Main {
 		}
 		String sD = bytesToString(Encrypt.vigenere(result, keywordInverse));
 		System.out.println("Decoded knowing the key : " + sD);
-		System.out.println(" ");
+		System.out.println();
 
 	}
 	
@@ -102,21 +110,34 @@ public class Main {
 		System.out.println("Decoded knowing the key : " + sD);
 		
 		System.out.println();
+	}
+	
+	public static void testOneTimePad(byte[] string , byte[] randomPad) {		
+		//Encoding
+		byte[] result = Encrypt.oneTimePad(string, randomPad);
+		String s = bytesToString(result);
+		System.out.println("Encoded : " + s);
 
-		//TODO: BruteForce decoding
-		/*
-		//Decoding without key
-		byte[][] bruteForceResult = Decrypt.caesarBruteForce(result);
-		String sDA = Decrypt.arrayToString(bruteForceResult);
-		Helper.writeStringToFile(sDA, "bruteForceCaesar.txt");
+		//Decoding with key
+		String sD = bytesToString(Encrypt.oneTimePad(result, randomPad));
+		System.out.println("Decoded knowing the key : " + sD);
 		
-		byte decodingKey = Decrypt.caesarWithFrequencies(result);
-		String sFD = bytesToString(Encrypt.caesar(result, decodingKey));
-		System.out.println("Decoded without knowing the key : " + sFD);
-		*/
-		System.out.println();
 		System.out.println();
 	}
+	
+	public static void testCBC(byte[] string , byte[] randomPad) {		
+		//Encoding
+		byte[] result = Encrypt.cbc(string, randomPad);
+		String s = bytesToString(result);
+		System.out.println("Encoded : " + s);
+
+		//Decoding with key
+		String sD = bytesToString(Encrypt.cbc(result, randomPad));
+		System.out.println("Decoded knowing the key : " + sD);
+		
+		System.out.println();
+	}
+	
 	
 //TODO : TO BE COMPLETED
 	
