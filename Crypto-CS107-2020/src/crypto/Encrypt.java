@@ -114,23 +114,21 @@ public class Encrypt {
 		for (int i = 0; i < plainText.length; ++i) {
 			//if spaces should not be encoded, checks for non space characters and shifts by key
 			
-<<<<<<< HEAD
+
 			if (isNotSpace(spaceEncoding, plainText[i])){ 
 				plainText[i] = (byte)(plainText[i] ^ key);
-=======
-			if (isSpace(spaceEncoding, plainText[i])){ 
-				plainText[i] = (byte)(plainText[i] ^ keyModulo(key));
->>>>>>> branch 'master' of https://gitlab.epfl.ch/ramesh/cryptographymp1.git
-			}
-			
-<<<<<<< HEAD
+
+			//if (isNotSpace(spaceEncoding, plainText[i])){ 
+			//	plainText[i] = (byte)(plainText[i] ^ keyModulo(key));
+
 		//	System.out.print(plainText[i] + " ");
-=======
-			//System.out.print(plainText[i] + " ");
->>>>>>> branch 'master' of https://gitlab.epfl.ch/ramesh/cryptographymp1.git
+
 		}
 		
-		return plainText; // TODO: to be modified
+		
+		}// TODO: to be modified
+		return plainText;
+		
 	}
 	/**
 	 * Method to encode a byte array using a XOR with a single byte long key
