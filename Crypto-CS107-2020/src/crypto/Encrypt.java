@@ -139,9 +139,10 @@ public class Encrypt {
 	 * @return an encoded byte array 
 	 */
 	public static byte[] vigenere(byte[] plainText, byte[] keyword, boolean spaceEncoding) {
-		// TODO: COMPLETE THIS METHOD		
+		// TODO: Modularise this method such that it uses and overload of caesar!
+		//TODO: This code is mostly copy pasted from Caesar. You should create new overload caesar(byte plainChar, byte key, spaceEncoding)
+		
 		int iteratorIndex = 0;
-		//Loop indefinitely through the keywordArray, until all plainText has been iterated through
 		
 		for (byte val: keyword) {
 			System.out.println("keyword byte" + val);
@@ -170,8 +171,7 @@ public class Encrypt {
 		}
 		System.out.println();
 		
-		return plainText; // this won't return if the "if statement" above returns this already
-		//TODO: This code is mostly copy pasted from Caesar. Should you create new overload caesar(byte plainText, byte key, spaceEncoding)?
+		return plainText;
 	}
 	
 	/**
