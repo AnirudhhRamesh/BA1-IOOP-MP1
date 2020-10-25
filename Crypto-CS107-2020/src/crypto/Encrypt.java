@@ -29,24 +29,29 @@ public class Encrypt {
 	 */
 	public static String encrypt(String message, String key, int type) {
 		// TODO: COMPLETE THIS METHOD
+		byte[] plainText = Helper.stringToBytes(message);
+		assert(plainText != null);
+		
+		byte[] keyBytes = Helper.stringToBytes(key);
+		byte keyByte = keyBytes[0];
 		
 		while ((type < 0)||(type > 4)){
-			System.out.println("Please enter a type that is within the range of 0-4: 0 = Caesar; 1 = Vigenere; 2 = XOR; 3 = One-time pad; 4 = CBC;");
+			System.out.println("False input. Please enter a type that is within the range of 0-4: 0 = Caesar; 1 = Vigenere; 2 = XOR; 3 = One-time pad; 4 = CBC;");
 		}
 		if (type == CAESAR){
-			//Caesar
+			caesar(plainText, keyByte); //By default, space encoding is off for Caesar
 		}
 		else if (type == VIGENERE) {
-			//Vigenere
+			//By default, space encoding is OFF for Vigenere
 		}
 		else if (type == XOR) {
-			//XOR
+			//By default, space encoding is OFF for XOR
 		}
 		else if (type == ONETIME) {
-			//One time pad
+			//By default, space encoding is ON for Onetimepad
 		}
 		else if (type == CBC) {
-			//CBC
+			//By default, space encoding is ON for CBC
 		}
 		return null; // TODO: to be modified
 	}
@@ -66,8 +71,7 @@ public class Encrypt {
 		assert(plainText != null); //assert => if plaintext is null, then the method will stop running
 		
 		key = keyModulo(key);
-		
-		
+
 		for (int i = 0; i < plainText.length; ++i) {
 			//if spaces should not be encoded, checks for non space characters and shifts by key
 			if(!spaceEncoding) {
@@ -83,7 +87,8 @@ public class Encrypt {
 			
 			System.out.print(plainText[i] + " ");
 		}
-		
+		System.out.println();
+
 		return plainText;
 	}
 	
@@ -96,7 +101,6 @@ public class Encrypt {
 	 * @return an encoded byte array
 	 */
 	public static byte[] caesar(byte[] plainText, byte key) {
-		
 		return caesar(plainText, key, false); //By default, space will not be encoded for caesar
 	}
 	
@@ -136,7 +140,38 @@ public class Encrypt {
 	 */
 	public static byte[] vigenere(byte[] plainText, byte[] keyword, boolean spaceEncoding) {
 		// TODO: COMPLETE THIS METHOD		
-		return null; // TODO: to be modified
+		int iteratorIndex = 0;
+		//Loop indefinitely through the keywordArray, until all plainText has been iterated through
+		
+		for (byte val: keyword) {
+			System.out.println("keyword byte" + val);
+		}
+		for (int i = 0; i < plainText.length; ++i) {
+			
+			//if spaces should not be encoded, checks for non space characters and shifts by key
+			if(!spaceEncoding) {
+				if (!(isSpace(plainText[i]))){ 
+					plainText[i] = (byte)(plainText[i] + keyword[iteratorIndex]);
+					++iteratorIndex;
+				}
+			}
+			
+			//if spaces should be encoded, then shifts each character by key
+			else { 
+				plainText[i] = (byte)(plainText[i] + keyword[iteratorIndex]);
+				++iteratorIndex;
+			}
+			
+			System.out.print(plainText[i] + " ");
+			
+			if (iteratorIndex == keyword.length){
+				iteratorIndex = 0;
+			}
+		}
+		System.out.println();
+		
+		return plainText; // this won't return if the "if statement" above returns this already
+		//TODO: This code is mostly copy pasted from Caesar. Should you create new overload caesar(byte plainText, byte key, spaceEncoding)?
 	}
 	
 	/**
@@ -149,8 +184,7 @@ public class Encrypt {
 	 * @return an encoded byte array 
 	 */
 	public static byte[] vigenere(byte[] plainText, byte[] keyword) {
-		// TODO: COMPLETE THIS METHOD
-		return null; // TODO: to be modified
+		return vigenere(plainText, keyword, false); //By default, space will not be encoded for caesar
 	}
 	
 	
@@ -206,11 +240,14 @@ public class Encrypt {
 	 * Method used to avoid space encoding where necessary
 	 * @param byteValue is the byte that is checked to see whether it represents a space (byte = 32)
 	 */
-	
 	public static boolean isSpace(byte byteValue) {
 		return (byteValue == (byte)(32)); //TODO: to be modified
 	}
 	
+	/**
+	 * Method used to modulo (%) the key by the BYTE_RANGE which is 256
+	 * @param key is the value that the character(s) will be shifted
+	 */
 	public static byte keyModulo(byte key) {
 		return (byte)(key%BYTE_RANGE);
 	}
