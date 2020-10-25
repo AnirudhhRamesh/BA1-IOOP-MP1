@@ -29,7 +29,7 @@ public class Encrypt {
 	public static String encrypt(String message, String key, int type) {
 		// TODO: COMPLETE THIS METHOD
 		
-		//Thisergdhfvydgxvdsnivnsib
+		
 		
 		return null; // TODO: to be modified
 	}
