@@ -75,7 +75,7 @@ public class Encrypt {
 		for (int i = 0; i < plainText.length; ++i) {
 			//if spaces should not be encoded, checks for non space characters and shifts by key
 			
-			if (isSpace(spaceEncoding, plainText[i])){ 
+			if (isNotSpace(spaceEncoding, plainText[i])){ 
 				plainText[i] = (byte)(plainText[i] + key);
 			}
 			
@@ -112,11 +112,11 @@ public class Encrypt {
 		for (int i = 0; i < plainText.length; ++i) {
 			//if spaces should not be encoded, checks for non space characters and shifts by key
 			
-			if (isSpace(spaceEncoding, plainText[i])){ 
+			if (isNotSpace(spaceEncoding, plainText[i])){ 
 				plainText[i] = (byte)(plainText[i] ^ key);
 			}
 			
-			System.out.print(plainText[i] + " ");
+		//	System.out.print(plainText[i] + " ");
 		}
 		
 		return plainText; // TODO: to be modified
@@ -148,7 +148,7 @@ public class Encrypt {
 			byte[] plainTextContainer = {plainText[i]};			
 			plainText[i] = caesar(plainTextContainer, keyword[iteratorIndex], spaceEncoding)[0];
 
-			if (isSpace(spaceEncoding, plainText[i])) {
+			if (isNotSpace(spaceEncoding, plainText[i])) {
 				++iteratorIndex;
 			}
 			
@@ -170,7 +170,7 @@ public class Encrypt {
 	 * @return an encoded byte array 
 	 */
 	public static byte[] vigenere(byte[] plainText, byte[] keyword) {
-		return vigenere(plainText, keyword, false); //By default, space will not be encoded for caesar
+		return vigenere(plainText, keyword, false); //By default, space will not be encoded for vigenere
 	}
 	
 	
@@ -227,7 +227,7 @@ public class Encrypt {
 	 * @param spaceEncoding if false, then spaces are not encoded
 	 * @param byteValue is the byte that is checked to see whether it represents a space (byte = 32)
 	 */
-	public static boolean isSpace(boolean spaceEncoding, byte byteValue) {
+	public static boolean isNotSpace(boolean spaceEncoding, byte byteValue) {
 		if (!spaceEncoding) {
 			return !(byteValue == (byte)(32));
 		}
