@@ -18,7 +18,7 @@ public class Main {
 		
 		
 		String inputMessage = Helper.readStringFromFile("text_one.txt");
-		String key = "2cF%5";
+		String key = "2cF%5"; //Value shift is 50
 		
 		String messageClean = cleanString(inputMessage);
 		

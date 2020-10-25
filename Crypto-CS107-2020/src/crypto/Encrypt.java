@@ -13,6 +13,7 @@ public class Encrypt {
 	
 	public static final byte SPACE = 32;
 	
+	public static final int BYTE_RANGE = 256;
 	final static Random rand = new Random();
 	
 	//-----------------------General-------------------------
@@ -64,45 +65,26 @@ public class Encrypt {
 	public static byte[] caesar(byte[] plainText, byte key, boolean spaceEncoding) {
 		assert(plainText != null); //assert => if plaintext is null, then the method will stop running
 		
+		key = keyModulo(key);
 		
-		byte keyModulo = (byte)(key%256); //256 => Number of characters possible encoded
-		// TODO: COMPLETE THIS METHOD
 		
-		//do KEY mod 256 = KEY?
-		//Add KEY to each character =>
-		
-		if (!spaceEncoding) {
-			//Modify such that space does not get encoded
-		}
-		System.out.println("Key:" + key);
-		System.out.println("Key modulo:" + (key%256));
-		System.out.println("Original Byte String: ");
-		
-		for (int val: plainText) {
-			System.out.print(plainText[val] + " ");
-			//plainText[val] = (byte)(plainText[val] + key);
-			
-			//TODO: Make "WRAPAROUND" into a method
-			
-			//plainText[val] = 67;
-
-			/*if ((plainText[val] + keyModulo <= 127)||(plainText[val] + keyModulo >= -128)||(plainText[val]!= 32)){
-				plainText[val] += keyModulo;
-			}*/
-		}
-		System.out.println(" ");
-		
-		System.out.println("Encoded Byte String");
 		for (int i = 0; i < plainText.length; ++i) {
-			plainText[i] = (byte)(plainText[i] + key);
+			//if spaces should not be encoded, checks for non space characters and shifts by key
+			if(!spaceEncoding) {
+				if (!(isSpace(plainText[i]))){ 
+					plainText[i] = (byte)(plainText[i] + key);
+				}
+			}
+			
+			//if spaces should be encoded, then shifts each character by key
+			else { 
+				plainText[i] = (byte)(plainText[i] + key);
+			}
+			
 			System.out.print(plainText[i] + " ");
 		}
 		
-		System.out.println("");
-
-		//Range is from -128 to 127
-				
-		return plainText; // TODO: to be modified
+		return plainText;
 	}
 	
 	/**
@@ -221,21 +203,17 @@ public class Encrypt {
 
 	
 	/**
-	 * Method used to wrap the number between the range -128 to 127 when shifting from left to right
-	 * @param byteValue is the byte that must be shifted by the value of key
-	 * @key is the key that determines the value of the shift
+	 * Method used to avoid space encoding where necessary
+	 * @param byteValue is the byte that is checked to see whether it represents a space (byte = 32)
 	 */
 	
-	public static byte wrapKeyShift(byte byteValue, byte key) {
-		
-		//Byte encoding range: -128 to 127
-		
-		//Does the bytes automatically wrap themselves or no?
-		//If yes, then this function is unnecessary
-		
-		return (byte)3; //TODO: to be modified
+	public static boolean isSpace(byte byteValue) {
+		return (byteValue == (byte)(32)); //TODO: to be modified
 	}
 	
+	public static byte keyModulo(byte key) {
+		return (byte)(key%BYTE_RANGE);
+	}
 	
 	
 }
