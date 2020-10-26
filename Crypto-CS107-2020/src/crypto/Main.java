@@ -145,13 +145,16 @@ public class Main {
 		//Encoding
 		byte[] result = Encrypt.cbc(string, randomPad);
 		String s = bytesToString(result);
-		System.out.println("Encoded : " + s);
+		for(int i = 0; i < s.length(); ++i)
+		System.out.println(s.charAt(i));
+		//System.out.println("Encoded : " + s);
 
-		//Decoding with key
+		/* Decoding with key
 		String sD = bytesToString(Encrypt.cbc(result, randomPad));
 		System.out.println("Decoded knowing the key : " + sD);
 		
 		System.out.println();
+		*/
 	}
 	
 	//-----------------------Decryption Testing Methods-------------------------
