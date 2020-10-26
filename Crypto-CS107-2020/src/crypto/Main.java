@@ -62,6 +62,9 @@ public class Main {
 		Decrypt.computeFrequencies(Helper.stringToBytes(customMessage));
 		System.out.println();
 
+		System.out.println("Testing caesar frequencies calculation");
+		byte test = Decrypt.caesarWithFrequencies(Helper.stringToBytes(customMessage));
+		
 		// TODO: TO BE COMPLETED
 		
 	}

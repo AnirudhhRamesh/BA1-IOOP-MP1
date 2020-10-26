@@ -67,6 +67,7 @@ public class Decrypt {
 	public static byte caesarWithFrequencies(byte[] cipherText) {
 		//TODO : Arnie: Third Task -> Call computeFrequencies and caesarFindKey in this method
 		
+		byte key = caesarFindKey(computeFrequencies(cipherText));
 		
 		return -1; //TODO: to be modified
 	}
@@ -103,12 +104,10 @@ public class Decrypt {
 			System.out.print((Helper.bytesToString(tempByteConverter)) + ": " + cipherFrequencies[i] + "   ");
 		}
 		
+		//TODO: Remove this printer
 		System.out.println();
-		System.out.println();
-		System.out.println();
+		System.out.println("English Frequencies size:" + ENGLISHFREQUENCIES.length);
 
-		System.out.println("spaceCounter: " + spaceCounter);
-		
 		return cipherFrequencies;
 	}
 	
@@ -121,6 +120,18 @@ public class Decrypt {
 	public static byte caesarFindKey(float[] charFrequencies) {
 		//TODO : Arnie: Second Task!
 		
+		for (int i = 0; i < 256; ++i) {
+			for (int j = 0; j < 256; ++j) {
+				
+			}
+		}
+		//System.out.println("English Frequencies size:" + ENGLISHFREQUENCIES);
+		
+		//Compare computeFrequencies with EnglishLanguage table
+		//Calculate scalar product
+		
+		
+		//We have used caesarFind keys
 		
 		return -1; //TODO: to be modified
 	}
