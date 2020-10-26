@@ -208,6 +208,8 @@ public class Encrypt {
 			plainText[i] = xor(plainTextContainer, pad[i])[0];
 		}
 		
+		//TODO: Remove this text afterwards
+		
 		return plainText;
 	}
 	
