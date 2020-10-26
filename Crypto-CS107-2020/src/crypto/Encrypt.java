@@ -244,6 +244,9 @@ public class Encrypt {
 		//Verify the pad.length >= plainText.length, else return null
 		//Make sure you can unencode the file
 		
+		//XOR key with the first key.length terms of the plainText (Step 1)
+		//XOR next key.length terms of plainText with previously ciphered plainText block (Step 2)
+		//Repeat Step 2 until the end
 		return plainText;
 	}
 	
