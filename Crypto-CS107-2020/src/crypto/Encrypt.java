@@ -226,40 +226,23 @@ public class Encrypt {
 		assert(plainText != null);
 
 		int padSize = iv.length;
-		int j = 0;
-		// TODO: COMPLETE THIS METHOD
-		//Decompose message into blocks of the pad size
-		//Pad is randomly generated
-		//XOR Blocks with pad
-		//Just a onetimepad, but you split the string into several blocks that are each the pad size
-		//The string might not always end when the block ends, so be sure to program in terms of string.length and not block.length when iterating through
-		//Verify the pad.length >= plainText.length, else return null
-		
-		//Cipher block chaining is like OneTimePad combined with Vigenere
-		
-		for (int i = 0; i < plainText.length; i+=padSize) {
-			//create blocks of string that are equal to iv.length
-			byte[] blockText = new byte[padSize];
-			blockText[j] = (byte)plainText[i];
-			++j;
 			
-			if (j == padSize - 1) {  //This clearly won't reset the counter to j, you need to set up a separate counter
-				j = 0;
-			}
-			
-			System.out.print(blockText[j] + " ");
-			System.out.println();
-			//Run blocks of string into oneTimePad function
-			
-			//Reiterate through plainText to replace with the encoded oneTimePad values
-			
-			//Make sure you can unencode the file
+		for (int i = 0; i < padSize; ++i) {
+			plainText[i] = (byte) (plainText[i] ^ iv[i]);
+					System.out.println(plainText[i]);
 		}
 		
-		//plainText = oneTimePad(plainText, iv);
+	for(int i = padSize; i < (plainText.length); ++i) {
 		
+		plainText[i] = (byte) (plainText[i] ^ plainText[i - padSize]);
+		System.out.println(plainText[i]);
 		
+	}	
 		
+		// TODO: COMPLETE THIS METHOD
+		//The string might not always end when the block ends, so be sure to program in terms of string.length and not block.length when iterating through
+		//Verify the pad.length >= plainText.length, else return null
+		//Make sure you can unencode the file
 		
 		return plainText;
 	}

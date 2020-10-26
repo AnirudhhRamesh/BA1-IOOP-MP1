@@ -19,7 +19,7 @@ public class Main {
 		
 		String inputMessage = Helper.readStringFromFile("text_one.txt");
 		String key = "2cF%5"; //Value shift is 50
-		String customMessage = "bbbb bbbb";//"bonne journée";
+		String customMessage = "bonne journée";//"bonne journée";
 		
 		String messageClean = cleanString(inputMessage);
 		
@@ -43,12 +43,12 @@ public class Main {
 		testXOR(Helper.stringToBytes(customMessage), (byte)7);
 		
 		System.out.println("------One Time Pad------");
-		testOneTimePad(messageBytes, Encrypt.generatePad(messageBytes.length));
+	    testOneTimePad(messageBytes, Encrypt.generatePad(messageBytes.length));
 		testOneTimePad(Helper.stringToBytes(customMessage), Encrypt.generatePad(customMessage.length()));
 		
 		System.out.println("------CBC------");
 		//testCBC(messageBytes, Encrypt.generatePad(4));
-		//testCBC(Helper.stringToBytes(customMessage), Encrypt.generatePad(4));
+		testCBC(Helper.stringToBytes(customMessage), Encrypt.generatePad(4));
 		
 		//----------------------- Decryption Testing-------------------------
 		System.out.println("------Compute Frequencies------");
