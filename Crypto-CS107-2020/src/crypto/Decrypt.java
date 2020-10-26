@@ -26,6 +26,7 @@ public class Decrypt {
 	public static String breakCipher(String cipher, int type) {
 		//TODO : COMPLETE THIS METHOD
 		
+		//The method should be such that if you call it with cipher and type, it will decrypt the message
 		return null; //TODO: to be modified
 	}
 	
@@ -52,6 +53,8 @@ public class Decrypt {
 	public static byte[][] caesarBruteForce(byte[] cipher) {
 		//TODO : COMPLETE THIS METHOD
 
+		//Attempt breaking using every possible key (-128 to 127) and user manually reads through them all
+		
 		return null; //TODO: to be modified
 	}	
 	
@@ -62,8 +65,9 @@ public class Decrypt {
 	 * @return the encoding key
 	 */
 	public static byte caesarWithFrequencies(byte[] cipherText) {
-		//TODO : COMPLETE THIS METHOD
-
+		//TODO : Arnie: Third Task -> Call computeFrequencies and caesarFindKey in this method
+		
+		
 		return -1; //TODO: to be modified
 	}
 	
@@ -73,7 +77,24 @@ public class Decrypt {
 	 * @return the character frequencies as an array of float
 	 */
 	public static float[] computeFrequencies(byte[] cipherText) {
-		//TODO : COMPLETE THIS METHOD
+		//TODO : Arnie: First Task!!
+		//This returns a float []!
+		
+		float[] cipherFrequencies = new float[255];
+		
+		//It's a 1D table, with each index correspoding to a byte. Be careful, byte range is -128 to 127, but table index starts with 0
+		//Ignore spaces (so it is 255 characters in total?
+		for (int i = 0; i < cipherFrequencies.length; ++i) { //Collect frequencies of characters based on byte value index
+			for (int j = 0; j < cipherText.length; ++j) { //Iterate through all characters of the cipherTable
+				if (((cipherText[j] + 128) == i)&& (cipherText[j] != 32)) {
+					++cipherFrequencies[i];
+				}
+			}
+			
+			System.out.println(cipherFrequencies[i]);
+		}
+		
+		
 		return null; //TODO: to be modified
 	}
 	
@@ -84,7 +105,9 @@ public class Decrypt {
 	 * @return the key
 	 */
 	public static byte caesarFindKey(float[] charFrequencies) {
-		//TODO : COMPLETE THIS METHOD
+		//TODO : Arnie: Second Task!
+		
+		
 		return -1; //TODO: to be modified
 	}
 	
@@ -100,6 +123,7 @@ public class Decrypt {
 	 */
 	public static byte[][] xorBruteForce(byte[] cipher) {
 		//TODO : COMPLETE THIS METHOD
+		//Attempt breaking using every possible key (-128 to 127) and user manually reads through them all
 
 		return null; //TODO: to be modified
 	}
@@ -116,6 +140,8 @@ public class Decrypt {
 	 */
 	public static byte[] vigenereWithFrequencies(byte[] cipher) {
 		//TODO : COMPLETE THIS METHOD
+		
+		//Arnie
 		return null; //TODO: to be modified
 	}
 	
@@ -138,7 +164,9 @@ public class Decrypt {
 	 * @return the length of the key
 	 */
 	public static int vigenereFindKeyLength(List<Byte> cipher) {
-		//TODO : COMPLETE THIS METHOD
+		//TODO : Arnie
+		
+		
 		return -1; //TODO: to be modified
 	}
 
@@ -152,7 +180,9 @@ public class Decrypt {
 	 * @return the inverse key to decode the Vigenere cipher text
 	 */
 	public static byte[] vigenereFindKey(List<Byte> cipher, int keyLength) {
-		//TODO : COMPLETE THIS METHOD
+		//TODO : Arnie
+		
+		
 		return null; //TODO: to be modified
 	}
 	
