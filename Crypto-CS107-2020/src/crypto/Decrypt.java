@@ -80,22 +80,36 @@ public class Decrypt {
 		//TODO : Arnie: First Task!!
 		//This returns a float []!
 		
-		float[] cipherFrequencies = new float[255];
+		float[] cipherFrequencies = new float[255]; //ignoring spaces, therefore range = 256 - 1 = 255
+		int spaceCounter = 0;
 		
-		//It's a 1D table, with each index correspoding to a byte. Be careful, byte range is -128 to 127, but table index starts with 0
-		//Ignore spaces (so it is 255 characters in total?
 		for (int i = 0; i < cipherFrequencies.length; ++i) { //Collect frequencies of characters based on byte value index
 			for (int j = 0; j < cipherText.length; ++j) { //Iterate through all characters of the cipherTable
-				if (((cipherText[j] + 128) == i)&& (cipherText[j] != 32)) {
-					++cipherFrequencies[i];
+				if ((cipherText[j] + 128) == i) {
+					if (cipherText[j] != 32) {
+						++cipherFrequencies[i];
+					}
+					else {
+						++spaceCounter;
+					}
 				}
 			}
-			
-			System.out.println(cipherFrequencies[i]);
+		}
+
+		//For loop to print out the character frequencies into console
+		for (int i = 0; i < cipherFrequencies.length; ++i) {
+			cipherFrequencies[i] /= (cipherText.length - spaceCounter); //Calculating ratio of frequency (excluding spaces in calculation
+			byte[] tempByteConverter = {((byte)(i - 128))};
+			System.out.print((Helper.bytesToString(tempByteConverter)) + ": " + cipherFrequencies[i] + "   ");
 		}
 		
+		System.out.println();
+		System.out.println();
+		System.out.println();
+
+		System.out.println("spaceCounter: " + spaceCounter);
 		
-		return null; //TODO: to be modified
+		return cipherFrequencies;
 	}
 	
 	

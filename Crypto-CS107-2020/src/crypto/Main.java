@@ -19,7 +19,7 @@ public class Main {
 		
 		String inputMessage = Helper.readStringFromFile("text_one.txt");
 		String key = "2cF%5"; //Value shift is 50
-		String customMessage = "bonne journée";
+		String customMessage = "bbbb bbbb";//"bonne journée";
 		
 		String messageClean = cleanString(inputMessage);
 		
@@ -47,10 +47,23 @@ public class Main {
 		testOneTimePad(Helper.stringToBytes(customMessage), Encrypt.generatePad(customMessage.length()));
 		
 		System.out.println("------CBC------");
-		testCBC(messageBytes, Encrypt.generatePad(4));
-		testCBC(Helper.stringToBytes(customMessage), Encrypt.generatePad(4));
+		//testCBC(messageBytes, Encrypt.generatePad(4));
+		//testCBC(Helper.stringToBytes(customMessage), Encrypt.generatePad(4));
 		
+		//----------------------- Decryption Testing-------------------------
+		System.out.println("------Compute Frequencies------");
+		
+		System.out.println("Frequencies table:");
+		Decrypt.computeFrequencies(messageBytes);
+		System.out.println();
+		System.out.println();
+
+		System.out.println("Frequencies Table bonne journee: ");
+		Decrypt.computeFrequencies(Helper.stringToBytes(customMessage));
+		System.out.println();
+
 		// TODO: TO BE COMPLETED
+		
 	}
 	
 	
@@ -138,6 +151,19 @@ public class Main {
 		System.out.println();
 	}
 	
+	//-----------------------Decryption Testing Methods-------------------------
+	public static void testComputeFrequencies(byte[] string , byte[] randomPad) {		
+		//Encoding
+		byte[] result = Encrypt.cbc(string, randomPad);
+		String s = bytesToString(result);
+		System.out.println("Encoded : " + s);
+
+		//Decoding with key
+		String sD = bytesToString(Encrypt.cbc(result, randomPad));
+		System.out.println("Decoded knowing the key : " + sD);
+		
+		System.out.println();
+	}
 	
 //TODO : TO BE COMPLETED
 	
