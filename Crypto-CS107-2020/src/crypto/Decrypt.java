@@ -129,16 +129,19 @@ public class Decrypt {
 			
 			for (int j = 0; j < ENGLISHFREQUENCIES.length; ++j) { //Iterates 26 times (through ENGLISH Frequencies.length
 				//System.out.print(charFrequenciesIterator + " ");
+				//System.out.println("Scalar Product: " + ENGLISHFREQUENCIES[j] + " * " + charFrequencies[charFrequenciesIterator] + " = " + (ENGLISHFREQUENCIES[j]*charFrequencies[charFrequenciesIterator]));
+
 				scalarProduct += ENGLISHFREQUENCIES[j]*charFrequencies[charFrequenciesIterator];
-				
 				if (charFrequenciesIterator == 255) { //Wrap-around function
 					charFrequenciesIterator = -1;
 				}
-				++charFrequenciesIterator;
-				scalarProducts[i] = scalarProduct;
+				++charFrequenciesIterator;	
 			}
 			
-			//System.out.println();
+			scalarProducts[i] = scalarProduct;
+			System.out.println();
+			System.out.print("Scalar Products Array value: " + i + " : " + scalarProducts[i]);
+
 			++iterationCounter;
 			charFrequenciesIterator = iterationCounter;
 		}
@@ -147,6 +150,7 @@ public class Decrypt {
 			if (scalarProducts[i] > maxScalarProduct) {
 				maxScalarProduct = scalarProducts[i];
 				maxScalarProductIndex = i;
+				System.out.println(maxScalarProduct + " : " + i);  //TODO: Fix, this always returns i = 225 Why is this?
 			}
 		}
 		int tempKey = (97 - maxScalarProductIndex); //TODO Remove the - as it is just used to check absolute value method
@@ -157,6 +161,7 @@ public class Decrypt {
 		
 		key = (byte)(tempKey);	//Calculates the absolute value (= distance between 'a'(97) and index)
 		
+		System.out.println();
 		System.out.println("KeyHolder: " + tempKey + "   keyValue: " + key);
 		return key;
 	}

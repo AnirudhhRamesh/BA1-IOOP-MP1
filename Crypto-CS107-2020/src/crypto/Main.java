@@ -75,6 +75,7 @@ public class Main {
 		//Encoding
 		byte[] result = Encrypt.caesar(string, key);
 		String s = bytesToString(result);
+		System.out.println("Caesar encoding key: " + key);
 		System.out.println("Encoded : " + s);
 
 		//Decoding with key
@@ -85,7 +86,7 @@ public class Main {
 		
 		//Decoding using Frequency Profile
 		byte keyFP = (byte)Decrypt.caesarWithFrequencies(result);
-		String sDFP = bytesToString(Encrypt.caesar(result, (byte) (key)));
+		String sDFP = bytesToString(Encrypt.caesar(result, (byte) (-key)));
 		System.out.println("Decoded using Frequency Profile: " + sDFP);
 		
 		System.out.println();
