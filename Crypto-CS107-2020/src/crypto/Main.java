@@ -88,6 +88,7 @@ public class Main {
 		String sDFP = bytesToString(Encrypt.caesar(result, (byte) (key)));
 		System.out.println("Decoded using Frequency Profile: " + sDFP);
 		
+		System.out.println();
 		//TODO: BruteForce decoding
 		/*
 		//Decoding without key
