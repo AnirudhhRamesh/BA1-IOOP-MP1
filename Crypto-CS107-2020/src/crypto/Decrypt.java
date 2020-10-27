@@ -114,43 +114,54 @@ public class Decrypt {
 		 *  4. Find the index of the biggest scalar product out of all scalar products
 		 *  Distance between charFrequencies[i] and 97 is the key
 		 */
-		
 		int iterationCounter = 0;
 		int charFrequenciesIterator = 0;
+		
 		double[] scalarProducts = new double[charFrequencies.length];
 		double maxScalarProduct = 0;
 		int maxScalarProductIndex = 0;
+		
 		byte key = (byte)0;
 		
-		//System.out.println();
+		System.out.println();
 		
 		for (int i = 0; i < charFrequencies.length; ++i) { //Iterates through all the values of charFrequencies (= 256 values) => Iterates 256 times.
 			double scalarProduct = 0;
 			
 			for (int j = 0; j < ENGLISHFREQUENCIES.length; ++j) { //Iterates 26 times (through ENGLISH Frequencies.length
-				//System.out.print(charFrequenciesIterator + " ");
+				
+				//System.out.println(ENGLISHFREQUENCIES.length);
+				//System.out.print(ENGLISHFREQUENCIES[j] + " * " + charFrequencies[charFrequenciesIterator] + " + "); //26 iterations here
 				//System.out.println("Scalar Product: " + ENGLISHFREQUENCIES[j] + " * " + charFrequencies[charFrequenciesIterator] + " = " + (ENGLISHFREQUENCIES[j]*charFrequencies[charFrequenciesIterator]));
 
-				scalarProduct += ENGLISHFREQUENCIES[j]*charFrequencies[charFrequenciesIterator];
-				if (charFrequenciesIterator == 255) { //Wrap-around function
+				scalarProduct += ENGLISHFREQUENCIES[j]*charFrequencies[charFrequenciesIterator]; //a*0 + b*1 + ... + z*25; a*1 + b*2 + ... + z*26; ... ; a*255 + b*0 + ... + z*24;
+				if (charFrequenciesIterator == 255) { //Wrap-around function for the iterator
 					charFrequenciesIterator = -1;
 				}
+				
 				++charFrequenciesIterator;	
+				//System.out.println();
 			}
 			
+			//System.out.println();
+			//System.out.print(charFrequenciesIterator);
+			
 			scalarProducts[i] = scalarProduct;
-			System.out.println();
-			System.out.print("Scalar Products Array value: " + i + " : " + scalarProducts[i]);
+			//System.out.println();
+			//System.out.println("Scalar Products Array length: " + scalarProducts.length); //scalarProducts length is 256
+			//System.out.print("Scalar Product: index " + i + " : " + scalarProducts[i]);
 
 			++iterationCounter;
 			charFrequenciesIterator = iterationCounter;
 		}
 		
+		System.out.println();
+		System.out.println();
 		for (int i = 0; i < scalarProducts.length; ++i) { //Retrieves index of largest scalar product from the 256 computed scalar products.
 			if (scalarProducts[i] > maxScalarProduct) {
 				maxScalarProduct = scalarProducts[i];
 				maxScalarProductIndex = i;
-				System.out.println(maxScalarProduct + " : " + i);  //TODO: Fix, this always returns i = 225 Why is this?
+				System.out.println(i + " : " + maxScalarProduct);  //TODO: Fix, this always returns i = 225 Why is this?
 			}
 		}
 		int tempKey = (97 - maxScalarProductIndex); //TODO Remove the - as it is just used to check absolute value method
@@ -162,7 +173,8 @@ public class Decrypt {
 		key = (byte)(tempKey);	//Calculates the absolute value (= distance between 'a'(97) and index)
 		
 		System.out.println();
-		System.out.println("KeyHolder: " + tempKey + "   keyValue: " + key);
+		System.out.println("Max Scalar Product Index: " + maxScalarProductIndex);
+		System.out.println("keyValue = 97 - " + maxScalarProductIndex + " = " + key);
 		return key;
 	}
 	

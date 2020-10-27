@@ -17,7 +17,7 @@ public class Main {
 	public static void main(String args[]) {
 		
 		
-		String inputMessage = Helper.readStringFromFile("text_one.txt");
+		String inputMessage = Helper.readStringFromFile("text_three.txt");
 		String key = "2cF%5"; //Value shift is 50
 		String customMessage = "bonne journée";//"bonne journée";
 		
@@ -31,7 +31,7 @@ public class Main {
 		
 		System.out.println("------Caesar------");
 		testCaesar(messageBytes, keyBytes[0]);
-		testCaesar(Helper.stringToBytes(customMessage), (byte)3);
+		//testCaesar(Helper.stringToBytes(customMessage), (byte)3);
 		
 		System.out.println("------Vigenere------");
 		testVigenere(messageBytes, keyBytes);
@@ -47,7 +47,7 @@ public class Main {
 		testOneTimePad(Helper.stringToBytes(customMessage), Encrypt.generatePad(customMessage.length()));
 		
 		System.out.println("------CBC------");
-		//testCBC(messageBytes, Encrypt.generatePad(4));
+		//testCBC(messageBytes, Encrypt.generatePad(8));
 		testCBC(Helper.stringToBytes(customMessage), Encrypt.generatePad(4));
 		
 		//----------------------- Decryption Testing-------------------------
@@ -63,7 +63,7 @@ public class Main {
 		System.out.println();
 
 		System.out.println("Testing caesar frequencies calculation");
-		byte test = Decrypt.caesarWithFrequencies(Helper.stringToBytes(customMessage));
+		//byte test = Decrypt.caesarWithFrequencies(messageBytes);
 		
 		// TODO: TO BE COMPLETED
 		
@@ -85,11 +85,12 @@ public class Main {
 		System.out.println();
 		
 		//Decoding using Frequency Profile
-		byte keyFP = (byte)Decrypt.caesarWithFrequencies(result);
-		String sDFP = bytesToString(Encrypt.caesar(result, (byte) (-key)));
+		byte keyFP = Decrypt.caesarWithFrequencies(result); //returns the key of the shift
+		String sDFP = bytesToString(Encrypt.caesar(result, (byte) (-keyFP)));
 		System.out.println("Decoded using Frequency Profile: " + sDFP);
 		
 		System.out.println();
+		
 		//TODO: BruteForce decoding
 		/*
 		//Decoding without key
@@ -153,7 +154,7 @@ public class Main {
 		byte[] result = Encrypt.cbc(string, randomPad);
 		String s = bytesToString(result);
 		for(int i = 0; i < s.length(); ++i)
-		System.out.println(s.charAt(i));
+		System.out.print(s.charAt(i));
 		//System.out.println("Encoded : " + s);
 
 		/* Decoding with key
@@ -162,6 +163,8 @@ public class Main {
 		
 		System.out.println();
 		*/
+		
+		System.out.println();
 	}
 	
 	//-----------------------Decryption Testing Methods-------------------------
