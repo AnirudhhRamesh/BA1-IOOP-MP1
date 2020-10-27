@@ -64,12 +64,8 @@ public class Decrypt {
 	 * @param cipherText the byte array representing the encoded text
 	 * @return the encoding key
 	 */
-	public static byte caesarWithFrequencies(byte[] cipherText) {
-		//TODO : Arnie: Third Task -> Call computeFrequencies and caesarFindKey in this method
-		
-		byte key = caesarFindKey(computeFrequencies(cipherText));
-		
-		return -1; //TODO: to be modified
+	public static byte caesarWithFrequencies(byte[] cipherText) {				
+		return caesarFindKey(computeFrequencies(cipherText));
 	}
 	
 	/**
@@ -78,10 +74,7 @@ public class Decrypt {
 	 * @return the character frequencies as an array of float
 	 */
 	public static float[] computeFrequencies(byte[] cipherText) {
-		//TODO : Arnie: First Task!!
-		//This returns a float []!
-		
-		float[] cipherFrequencies = new float[255]; //ignoring spaces, therefore range = 256 - 1 = 255
+		float[] cipherFrequencies = new float[256]; //ignoring spaces, but range remains unchanged
 		int spaceCounter = 0;
 		
 		for (int i = 0; i < cipherFrequencies.length; ++i) { //Collect frequencies of characters based on byte value index
@@ -103,10 +96,6 @@ public class Decrypt {
 			byte[] tempByteConverter = {((byte)(i - 128))};
 			System.out.print((Helper.bytesToString(tempByteConverter)) + ": " + cipherFrequencies[i] + "   ");
 		}
-		
-		//TODO: Remove this printer
-		System.out.println();
-		System.out.println("English Frequencies size:" + ENGLISHFREQUENCIES.length);
 
 		return cipherFrequencies;
 	}
@@ -118,22 +107,58 @@ public class Decrypt {
 	 * @return the key
 	 */
 	public static byte caesarFindKey(float[] charFrequencies) {
-		//TODO : Arnie: Second Task!
+		/* Method used:
+		 * 	1. Create an iterator from 0 to 255 (inclusive => 256 values)
+		 * 	2. Multiply ENGLISHFREQUENCIES with A*0 (It. 0), A*1 (It. 1), ..., A*255 (It. 255)
+		 *  3. Create a wrap-around so if the charFreqIndex goes above 255, it wraps back to 0
+		 *  4. Find the index of the biggest scalar product out of all scalar products
+		 *  Distance between charFrequencies[i] and 97 is the key
+		 */
 		
-		for (int i = 0; i < 256; ++i) {
-			for (int j = 0; j < 256; ++j) {
+		int iterationCounter = 0;
+		int charFrequenciesIterator = 0;
+		double[] scalarProducts = new double[charFrequencies.length];
+		double maxScalarProduct = 0;
+		int maxScalarProductIndex = 0;
+		byte key = (byte)0;
+		
+		//System.out.println();
+		
+		for (int i = 0; i < charFrequencies.length; ++i) { //Iterates through all the values of charFrequencies (= 256 values) => Iterates 256 times.
+			double scalarProduct = 0;
+			
+			for (int j = 0; j < ENGLISHFREQUENCIES.length; ++j) { //Iterates 26 times (through ENGLISH Frequencies.length
+				//System.out.print(charFrequenciesIterator + " ");
+				scalarProduct += ENGLISHFREQUENCIES[j]*charFrequencies[charFrequenciesIterator];
 				
+				if (charFrequenciesIterator == 255) { //Wrap-around function
+					charFrequenciesIterator = -1;
+				}
+				++charFrequenciesIterator;
+				scalarProducts[i] = scalarProduct;
+			}
+			
+			//System.out.println();
+			++iterationCounter;
+			charFrequenciesIterator = iterationCounter;
+		}
+		
+		for (int i = 0; i < scalarProducts.length; ++i) { //Retrieves index of largest scalar product from the 256 computed scalar products.
+			if (scalarProducts[i] > maxScalarProduct) {
+				maxScalarProduct = scalarProducts[i];
+				maxScalarProductIndex = i;
 			}
 		}
-		//System.out.println("English Frequencies size:" + ENGLISHFREQUENCIES);
+		int tempKey = (97 - maxScalarProductIndex); //TODO Remove the - as it is just used to check absolute value method
 		
-		//Compare computeFrequencies with EnglishLanguage table
-		//Calculate scalar product
+		if (tempKey < 0) {
+			tempKey *= -1;
+		}
 		
+		key = (byte)(tempKey);	//Calculates the absolute value (= distance between 'a'(97) and index)
 		
-		//We have used caesarFind keys
-		
-		return -1; //TODO: to be modified
+		System.out.println("KeyHolder: " + tempKey + "   keyValue: " + key);
+		return key;
 	}
 	
 	
