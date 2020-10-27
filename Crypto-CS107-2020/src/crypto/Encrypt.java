@@ -229,15 +229,14 @@ public class Encrypt {
 			
 		for (int i = 0; i < padSize; ++i) {
 			plainText[i] = (byte) (plainText[i] ^ iv[i]);
-					System.out.println(plainText[i]);
 		}
 		
-	for(int i = padSize; i < (plainText.length); ++i) {
+	    for(int i = padSize; i < (plainText.length); ++i) {
 		
 		plainText[i] = (byte) (plainText[i] ^ plainText[i - padSize]);
-		System.out.println(plainText[i]);
 		
-	}	
+	     }	
+    
 		
 		// TODO: COMPLETE THIS METHOD
 		//The string might not always end when the block ends, so be sure to program in terms of string.length and not block.length when iterating through
@@ -247,6 +246,10 @@ public class Encrypt {
 		//XOR key with the first key.length terms of the plainText (Step 1)
 		//XOR next key.length terms of plainText with previously ciphered plainText block (Step 2)
 		//Repeat Step 2 until the end
+	    
+	   // for( int i = 0; i < plainText.length; ++i)
+		//	System.out.println("Text lenght is" + plainText[i]);
+	     
 		return plainText;
 	}
 	
