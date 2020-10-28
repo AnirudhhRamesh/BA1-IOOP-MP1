@@ -154,7 +154,7 @@ public class Main {
 		byte[] result = Encrypt.cbc(string, randomPad);
 		String s = bytesToString(result);
 		for(int i = 0; i < s.length(); ++i)
-		System.out.print(s.charAt(i));
+		System.out.println(s.charAt(i));
 		//System.out.println("Encoded : " + s);
 
 		/* Decoding with key

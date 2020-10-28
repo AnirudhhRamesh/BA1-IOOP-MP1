@@ -232,9 +232,7 @@ public class Encrypt {
 		}
 		
 	    for(int i = padSize; i < (plainText.length); ++i) {
-		
-		plainText[i] = (byte) (plainText[i] ^ plainText[i - padSize]);
-		
+	    	plainText[i] = (byte) (plainText[i] ^ plainText[i - padSize]);
 	     }	
     
 		
