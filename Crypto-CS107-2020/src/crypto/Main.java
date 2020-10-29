@@ -17,13 +17,14 @@ public class Main {
 	public static void main(String args[]) {
 		
 		
-		String inputMessage = Helper.readStringFromFile("text_three.txt");
+		String inputMessage = Helper.readStringFromFile("text_one.txt");
 		String key = "2cF%5"; //Value shift is 50
-		String customMessage = "bonne journée";//"bonne journée";
+		String customMessage = "bonne journee";//"bonne journée";//"b:1 / , o:2 / , n:3 /, e:3 /, j:1 /, u:1/, r:1/ => 12 characters
 		
 		String messageClean = cleanString(inputMessage);
 		
 		byte[] messageBytes = stringToBytes(messageClean);
+		byte[] customMessageBytes = stringToBytes(customMessage);
 		byte[] keyBytes = stringToBytes(key);
 		
 		System.out.println("Original input sanitized : " + messageClean);
@@ -32,7 +33,7 @@ public class Main {
 		System.out.println("------Caesar------");
 		testCaesar(messageBytes, keyBytes[0]);
 		//testCaesar(Helper.stringToBytes(customMessage), (byte)3);
-		
+		/*
 		System.out.println("------Vigenere------");
 		testVigenere(messageBytes, keyBytes);
 		byte[] vigenereTempKeyTester = {(byte) 1, (byte) 2, (byte) 3};
@@ -54,7 +55,7 @@ public class Main {
 		System.out.println("------Compute Frequencies------");
 		
 		System.out.println("Frequencies table:");
-		Decrypt.computeFrequencies(messageBytes);
+		//Decrypt.computeFrequencies(messageBytes);
 		System.out.println();
 		System.out.println();
 
@@ -62,8 +63,8 @@ public class Main {
 		Decrypt.computeFrequencies(Helper.stringToBytes(customMessage));
 		System.out.println();
 
-		System.out.println("Testing caesar frequencies calculation");
-		//byte test = Decrypt.caesarWithFrequencies(messageBytes);
+		System.out.println("Testing caesar frequencies calculation");*/
+		//byte test = Decrypt.caesarWithFrequencies(messageBytes); //input a cipher text (instead of clean text
 		
 		// TODO: TO BE COMPLETED
 		
@@ -73,20 +74,30 @@ public class Main {
 	//Run the Encoding and Decoding using the caesar pattern 
 	public static void testCaesar(byte[] string , byte key) {		
 		//Encoding
-		byte[] result = Encrypt.caesar(string, key);
+		byte[] result = Encrypt.caesar(string, key); //encrypted using caesar, key=50
+		byte[] resultCopy = new byte[result.length];
+		
+
+		for (int i = 0; i < result.length; ++i)
+			resultCopy[i] = result[i];
+		
 		String s = bytesToString(result);
 		System.out.println("Caesar encoding key: " + key);
 		System.out.println("Encoded : " + s);
 
-		//Decoding with key
-		String sD = bytesToString(Encrypt.caesar(result, (byte) (-key)));
-		System.out.println("Decoded knowing the key : " + sD);
+
 		
+		//Decoding with key
+		String sD = bytesToString(Encrypt.caesar(result, (byte) (-key))); //running result changes the original array!!
+		System.out.println("Decoded knowing the key : " + sD);
+		//By decoding result with array, you are changing the values of result
+		//This changes the value that is decoded using the Frequency Profiler!!
 		System.out.println();
 		
+		
 		//Decoding using Frequency Profile
-		byte keyFP = Decrypt.caesarWithFrequencies(result); //returns the key of the shift
-		String sDFP = bytesToString(Encrypt.caesar(result, (byte) (-keyFP)));
+		//byte keyFP = Decrypt.caesarWithFrequencies(result); //returns the key of the shift
+		String sDFP = bytesToString(Encrypt.caesar(resultCopy, (byte) (Decrypt.caesarWithFrequencies(resultCopy))));
 		System.out.println("Decoded using Frequency Profile: " + sDFP);
 		
 		System.out.println();

@@ -65,7 +65,7 @@ public class Decrypt {
 	 * @return the encoding key
 	 */
 	public static byte caesarWithFrequencies(byte[] cipherText) {				
-		return caesarFindKey(computeFrequencies(cipherText));
+		return caesarFindKey(computeFrequencies(cipherText)); //caesarFindKey using computeFrequencies
 	}
 	
 	/**
@@ -98,6 +98,7 @@ public class Decrypt {
 		}
 
 		return cipherFrequencies;
+		//TODO: Compute frequencies is working well
 	}
 	
 	
@@ -107,11 +108,12 @@ public class Decrypt {
 	 * @return the key
 	 */
 	public static byte caesarFindKey(float[] charFrequencies) {
+		//TODO: There is an algorithmic error somewhere in this function
 		/* Method used:
-		 * 	1. Create an iterator from 0 to 255 (inclusive => 256 values)
-		 * 	2. Multiply ENGLISHFREQUENCIES with A*0 (It. 0), A*1 (It. 1), ..., A*255 (It. 255)
-		 *  3. Create a wrap-around so if the charFreqIndex goes above 255, it wraps back to 0
-		 *  4. Find the index of the biggest scalar product out of all scalar products
+		 * 	1. Create an iterator from 0 to 255 (inclusive => 256 values) /
+		 * 	2. Multiply ENGLISHFREQUENCIES with A*0 (It. 0), A*1 (It. 1), ..., A*255 (It. 255) /
+		 *  3. Create a wrap-around so if the charFreqIndex goes above 255, it wraps back to 0 /
+		 *  4. Find the index of the biggest scalar product out of all scalar products => Error here: always returns 255
 		 *  Distance between charFrequencies[i] and 97 is the key
 		 */
 		int iterationCounter = 0;
@@ -164,7 +166,8 @@ public class Decrypt {
 				System.out.println(i + " : " + maxScalarProduct);  //TODO: Fix, this always returns i = 225 Why is this?
 			}
 		}
-		int tempKey = (97 - maxScalarProductIndex); //TODO Remove the - as it is just used to check absolute value method
+		int trueByte = maxScalarProductIndex - 128; //Since we stored the charFrequencies as (byte) cipherText[j] + 128, we must subtract the 128 to retrieve the original key
+		int tempKey = (trueByte - 97); 
 		
 		if (tempKey < 0) {
 			tempKey *= -1;
@@ -174,7 +177,7 @@ public class Decrypt {
 		
 		System.out.println();
 		System.out.println("Max Scalar Product Index: " + maxScalarProductIndex);
-		System.out.println("keyValue = 97 - " + maxScalarProductIndex + " = " + key);
+		System.out.println("keyValue = " + trueByte + " - " + "97" + " = " + key);
 		return key;
 	}
 	
