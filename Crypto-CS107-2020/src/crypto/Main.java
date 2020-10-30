@@ -18,7 +18,7 @@ public class Main {
 		
 		
 		String inputMessage = Helper.readStringFromFile("text_two.txt");
-		String key = "2cF%5"; //Value shift is 50
+		String key = "2cF%5"; //Value shift[0] is 50. KeyLength = 5
 		String customMessage = "bonne journee";//"bonne journée";//"b:1 / , o:2 / , n:3 /, e:3 /, j:1 /, u:1/, r:1/ => 12 characters
 		
 		
@@ -26,8 +26,9 @@ public class Main {
 		
 		byte[] messageBytes = stringToBytes(messageClean);
 		byte[] customMessageBytes = stringToBytes(customMessage);
-		byte[] keyBytes = {(byte)70};//stringToBytes(key);
-		
+		byte[] keyBytes = stringToBytes(key);//{(byte)70};//
+
+		/*
 		System.out.println("Original input sanitized : " + messageClean);
 		System.out.println();
 		
@@ -68,8 +69,53 @@ public class Main {
 
 		System.out.println("Testing caesar frequencies calculation");
 		//byte test = Decrypt.caesarWithFrequencies(messageBytes); //input a cipher text (instead of clean text
-		
+		*/
 		// TODO: TO BE COMPLETED
+		
+		//----------------------- Caesar Freq. Profilers-------------------------
+		/*
+		*/
+		/*
+		String challengeCaesarFreqDecoder = Helper.bytesToString(Encrypt.caesar(challenge, (byte)(Decrypt.caesarWithFrequencies(challenge))));
+		
+		System.out.println("Decoded using Caesar Freq. Profiler: " + challengeCaesarFreqDecoder);
+		*/
+		//----------------------- Vigenere Freq. Profiler -------------------------
+		
+		/*
+		//Test 1:
+		byte[] result = Encrypt.vigenere(messageBytes, keyBytes);
+		String s = bytesToString(result);
+		System.out.println("Encoded : " + s);
+		byte[] vigenereKey = Decrypt.vigenereWithFrequencies(result);
+		
+		byte[] vigenereKeyInverse = new byte[vigenereKey.length];
+		for (int i = 0; i < vigenereKey.length; ++i) {
+			vigenereKeyInverse[i] = (byte)(-(vigenereKey[i]));
+		}
+		
+		System.out.println();
+		String challengeDecoded = bytesToString(Encrypt.vigenere(result, vigenereKey));
+		System.out.println("Decoded knowing the key : " + challengeDecoded);
+		System.out.println();
+		*/
+		
+		
+		//Test 2: Challenge
+		System.out.println("New challenge");
+		System.out.print(Helper.bytesToString(Helper.readBytesFromFile("challenge-encrypted.bin")));
+		byte[] challenge = Helper.readBytesFromFile("challenge-encrypted.bin");
+		byte[] vigenereKey = Decrypt.vigenereWithFrequencies(challenge);
+		
+		byte[] vigenereKeyInverse = new byte[vigenereKey.length];
+		for (int i = 0; i < vigenereKey.length; ++i) {
+			vigenereKeyInverse[i] = (byte)(-(vigenereKey[i]));
+		}
+		
+		System.out.println();
+		String challengeDecoded = bytesToString(Encrypt.vigenere(challenge, vigenereKey));
+		System.out.println("Decoded knowing the key : " + challengeDecoded);
+		System.out.println();
 		
 	}
 	

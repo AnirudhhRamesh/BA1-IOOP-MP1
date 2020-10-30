@@ -112,7 +112,7 @@ public class Decrypt {
 		for (int i = 0; i < cipherFrequencies.length; ++i) {
 			cipherFrequencies[i] /= (cipherText.length - spaceCounter); //Calculating ratio of frequency (excluding spaces in calculation
 			byte[] tempByteConverter = {((byte)(i - 128))};
-			System.out.print((Helper.bytesToString(tempByteConverter)) + ": " + cipherFrequencies[i] + "   ");
+			//System.out.print((Helper.bytesToString(tempByteConverter)) + ": " + cipherFrequencies[i] + "   ");
 		}
 
 		return cipherFrequencies;
@@ -141,7 +141,7 @@ public class Decrypt {
 		
 		byte key = (byte)0;
 		
-		System.out.println();
+		//System.out.println();
 		
 		for (int i = 0; i < charFrequencies.length; ++i) { //Iterates through all the values of charFrequencies (= 256 values) => Iterates 256 times.
 			double scalarProduct = 0;
@@ -161,13 +161,13 @@ public class Decrypt {
 			charFrequenciesIterator = iterationCounter;
 		}
 		
-		System.out.println();
-		System.out.println();
+		//System.out.println();
+		//System.out.println();
 		for (int i = 0; i < scalarProducts.length; ++i) { //Retrieves index of largest scalar product from the 256 computed scalar products.
 			if (scalarProducts[i] > maxScalarProduct) {
 				maxScalarProduct = scalarProducts[i];
 				maxScalarProductIndex = i;
-				System.out.println(i + " : " + maxScalarProduct);  //TODO: Fix, this always returns i = 225 Why is this?
+				//System.out.println(i + " : " + maxScalarProduct);  //TODO: Fix, this always returns i = 225 Why is this?
 			}
 		}
 		int trueByte = maxScalarProductIndex - 128; //Since we stored the charFrequencies as (byte) cipherText[j] + 128, we must subtract the 128 to retrieve the original key
@@ -179,9 +179,9 @@ public class Decrypt {
 		
 		key = (byte)(tempKey);	//Calculates the absolute value (= distance between 'a'(97) and index)
 		
-		System.out.println();
-		System.out.println("Max Scalar Product Index: " + maxScalarProductIndex);
-		System.out.println("keyValue = " + trueByte + " - " + "97" + " = " + key);
+		//System.out.println();
+		//System.out.println("Max Scalar Product Index: " + maxScalarProductIndex);
+		//System.out.println("keyValue = " + trueByte + " - " + "97" + " = " + key);
 		return key;
 	}
 	
@@ -223,7 +223,12 @@ public class Decrypt {
 		 *  Distance between charFrequencies[i] and 97 is the key
 		 */
 		
-		return null; //TODO: to be modified
+		List<Byte> cleanCipher = removeSpaces(cipher);
+		int keyLength = vigenereFindKeyLength(cleanCipher);
+		
+		byte[] vigenereKey = Decrypt.vigenereFindKey(cleanCipher, keyLength);
+		
+		return vigenereKey; //TODO: to be modified
 	}
 	
 	
@@ -235,13 +240,17 @@ public class Decrypt {
 	 */
 	public static List<Byte> removeSpaces(byte[] array){
 		//TODO : COMPLETE THIS METHOD
-		//TODO: Arnie: Task 1
 		//Remove all spaces
 		List<Byte> list = new ArrayList<Byte>();
 		
+		for (int i = 0; i < array.length; ++i) {
+			//If array[i] is a space, will not append to the list
+			if(Encrypt.spaceEncoder(false, array[i])) {
+				list.add((byte)(array[i]));
+			}
+		}
 		
-		
-		return null;
+		return list;
 	}
 	
 	
@@ -251,8 +260,8 @@ public class Decrypt {
 	 * @return the length of the key
 	 */
 	public static int vigenereFindKeyLength(List<Byte> cipher) {
+		assert (cipher.size() >= 6);
 		//TODO : Arnie: Task 2
-		
 		/*
 		 * Module 1:
 		 *      -> Iterate through two strings, one that is cipher and cipherShifted(by i), while i < cipher.length -1
@@ -260,14 +269,116 @@ public class Decrypt {
 		 *      
 		 * Module 2:
 		 *      -> Identify local maxima of first half of list (use Math.ciel() for odd number list.lengths)
-		 *      -> Store list of indexes in a ArrayList that is ORDERED
+		 *      -> Store list of INDEXES in a ArrayList that is ORDERED
 		 *      
 		 * Module 3:
 		 *      -> Use an associative table to find the length of the key
+		 *      -> Calculate the distance between consecutive local indices of loc.maximas (biggerIndex - smallerIndex -> [i+1] - [i]
+		 *      -> The distance that appears the most if that of the key length
 		 */
 		
+		//----------MODULE 1----------     Calculating coincidences: WORKS
+		List<Byte> cipherShifted = new ArrayList<Byte>();
+		int[] coincidences = new int[cipher.size()];
 		
-		return -1; //TODO: to be modified
+		for (int i = 0; i < cipher.size(); ++i) {
+			cipherShifted.add(cipher.get(i)); //duplicates the cipher
+		}
+		
+		for (int i = 1; i < cipher.size(); ++i) {
+			for (int j = 1; j < cipher.size() - i; ++j) { //Suffices to check for overlapping sequence areas, not for empty spaces
+				if(cipher.get(j).equals(cipher.get(j+i))) {
+					coincidences[i-1] += 1; //i - 1 = 0 (for initial loop)
+					//System.out.println(coincidences[i-1]); WORKS
+				} 
+			}
+			cipherShifted.add(0, (byte)(45)); //45 is a dash: -
+		}
+		
+		//----------MODULE 2----------     Calculating possible key sizes: WORKS
+		//TODO: Change maxIndex to int?
+		int maxIndex = (int)Math.ceil(cipher.size()/2); //If cipher.size/2 = 7.5 => Math.ciel returns 8
+		List<Integer> localMaximas = new ArrayList<Integer>(); //stores the indices of local Maximas
+		
+		for (int i = 0; i <= maxIndex; ++i) {
+			//Local maxima of two values to the left and two values to the right
+			
+			//For 0: index 0 is loc.max if 0 > 1 & 0> 2
+			if (i == 0) {
+				//LocalMaxima module
+				if (coincidences[i] > coincidences[i + 1] && coincidences[i] > coincidences[i + 2]) {
+					localMaximas.add(i);
+				}
+			}
+			//For 1: index 1 is loc.max if 1 > 0, 1 > 2 & 1 > 3
+			else if (i == 1) {
+				if (coincidences[i] > coincidences[i-1] && coincidences[i] > coincidences[i + 1] && 
+				coincidences[i] > coincidences[i + 2]) {
+					localMaximas.add(i);
+				}
+			}
+			//For 2: index 2 is loc.max if 2 > 0, 2 > 1 | 2 > 3 & 2 > 4
+			//-> Repeat the loop from here onwards
+			else {
+				if (coincidences[i] > coincidences[i-1] && coincidences[i] > coincidences[i-2] && 
+						coincidences[i] > coincidences[i + 1] && coincidences[i] > coincidences[i + 2]) {
+							localMaximas.add(i);
+						}
+			}	
+		}
+		
+		//This returns an average index distance of 5 (CORRESPONDING CORRECTLY)
+		/*for (int k = 0; k < localMaximas.size(); ++k) {
+			System.out.print(localMaximas.get(k) + " ");
+		}*/
+		
+		//----------MODULE 3----------     Calculating the keyArray.length: ERROR HERE?
+		//TODO: Use a java associative table: To structure calculations. 
+		
+		//KEY = distance, VALUE = frequency
+		Map<Integer, Integer> keyLengths = new HashMap<>();
+		
+		for (int i = 0; i < localMaximas.size() - 1; ++i) {
+			if((i + 1) <= localMaximas.size()) {
+				int distance = localMaximas.get(i + 1) - localMaximas.get(i); //TODO: IndexOutOfBounds
+				//System.out.print("Index: " + distance);
+				
+				if (keyLengths.containsKey(distance)) { //TODO: NullPointerException here!
+					keyLengths.replace(distance, keyLengths.get(distance) + 1); //Does +1 append an additional 1 to the function?
+				}
+				else {
+					keyLengths.put(distance, 1);
+				}
+			}
+			if (i == localMaximas.size() - 1) {
+				int distance = localMaximas.get(i) - localMaximas.get(i - 1);
+				keyLengths.put(distance, +1);
+				
+				//if (keyLengths.get(distance) != null || keyLengths.get(distance) != 0) {
+				if(keyLengths.containsKey(distance)) {
+					keyLengths.replace(distance, keyLengths.get(distance) + 1); //Does +1 append an additional 1 to the function?
+				}
+				else {
+					keyLengths.put(distance, 1);
+				}
+			}
+		}
+		
+		int tempMax = 0;
+		int keyLength = 0;
+		for (Map.Entry<Integer, Integer> pair : keyLengths.entrySet()) {
+			//Select the most frequent integer
+			if (tempMax < pair.getValue()) {
+				tempMax = pair.getValue();
+				keyLength = pair.getKey();
+				//System.out.print("Distance: " + pair.getKey() + " => Frequency: " + pair.getValue()); //ERROR
+			}			
+		}
+		
+		System.out.println();
+		System.out.println("Vigenere Freq. Profile Key Length: " + keyLength);
+		
+		return keyLength; //TODO: to be modified
 	}
 
 	
@@ -280,16 +391,32 @@ public class Decrypt {
 	 * @return the inverse key to decode the Vigenere cipher text
 	 */
 	public static byte[] vigenereFindKey(List<Byte> cipher, int keyLength) {
-		//TODO : Arnie: Task 3
-		
-		/*
+		/* TODO : Arnie: Task 3
 		 * Recover the key values:
 		 *      -> Divide the cipher by keyLength, into keyLength strings
 		 *      -> Use caesarFindFrequency on each of these new strings created
 		 *      -> Store the final keyarray into an array and return
 		 */
+		byte[] vigenereKeyArray = new byte[keyLength];
 		
-		return null; //TODO: to be modified
+		for (int i = 0; i < keyLength; ++i) {
+			List<Byte> subCipherArray = new ArrayList<Byte>();
+
+			for (int j = i; j < cipher.size(); j += keyLength) {				
+				subCipherArray.add(cipher.get(j));
+			}
+						
+			byte[] subCipherText = new byte[subCipherArray.size()];//This will most likely produce an error
+				
+			for (int k = 0; k < subCipherArray.size(); ++k) {
+				subCipherText[k] = subCipherArray.get(k);
+			}
+			vigenereKeyArray[i] = caesarWithFrequencies(subCipherText);
+			
+			System.out.print(vigenereKeyArray[i] + " ");
+		}
+		
+		return vigenereKeyArray;
 	}
 	
 	
