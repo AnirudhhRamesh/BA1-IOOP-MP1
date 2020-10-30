@@ -172,7 +172,7 @@ public class Main {
 		
 		byte[] decrypted = Decrypt.decryptCBC(result, randomPad);
 		String d = bytesToString(decrypted);
-		System.out.println("Decrypted message: " + d);
+		System.out.println("Decrypted knowing the key: " + d);
 		
 		
 		//System.out.println("Encoded : " + s);
