@@ -283,8 +283,37 @@ public class Decrypt {
 	 * @return the clear text
 	 */
 	public static byte[] decryptCBC(byte[] cipher, byte[] iv) {
+		
+		int keyLength = iv.length;
+		byte[] decoded = new byte[cipher.length];
+		
+		for(int i = 0; i < cipher.length; ++i) {
+			decoded[i] = cipher[i]; 
+			}
+		
+		for(int i = 0; i < keyLength; ++i) {
+			decoded[i] = (byte) (decoded[i] ^ iv[i]);
+			}
+		
+		for(int i = keyLength; i < decoded.length; ++i) {
+			
+			decoded[i] = (byte) (cipher[i] ^ cipher[i - keyLength]);
+			
+			
+		} 
+		
+		
+			
+		return decoded;
+			
+		
+		
+		
+		
+		
+		
 		//TODO : COMPLETE THIS METHOD	
-		return null; //TODO: to be modified
+		//return null; //TODO: to be modified
 	}
 	
 	

@@ -33,7 +33,7 @@ public class Main {
 		System.out.println("------Caesar------");
 		testCaesar(messageBytes, keyBytes[0]);
 		//testCaesar(Helper.stringToBytes(customMessage), (byte)3);
-		/*
+		
 		System.out.println("------Vigenere------");
 		testVigenere(messageBytes, keyBytes);
 		byte[] vigenereTempKeyTester = {(byte) 1, (byte) 2, (byte) 3};
@@ -48,7 +48,7 @@ public class Main {
 		testOneTimePad(Helper.stringToBytes(customMessage), Encrypt.generatePad(customMessage.length()));
 		
 		System.out.println("------CBC------");
-		//testCBC(messageBytes, Encrypt.generatePad(8));
+		testCBC(messageBytes, Encrypt.generatePad(8));
 		testCBC(Helper.stringToBytes(customMessage), Encrypt.generatePad(4));
 		
 		//----------------------- Decryption Testing-------------------------
@@ -62,8 +62,10 @@ public class Main {
 		System.out.println("Frequencies Table bonne journee: ");
 		Decrypt.computeFrequencies(Helper.stringToBytes(customMessage));
 		System.out.println();
+		
+		
 
-		System.out.println("Testing caesar frequencies calculation");*/
+		System.out.println("Testing caesar frequencies calculation");
 		//byte test = Decrypt.caesarWithFrequencies(messageBytes); //input a cipher text (instead of clean text
 		
 		// TODO: TO BE COMPLETED
@@ -86,7 +88,7 @@ public class Main {
 		System.out.println("Encoded : " + s);
 
 
-		
+	
 		//Decoding with key
 		//String sD = bytesToString(Encrypt.caesar(result, (byte) (-key))); //running result changes the original array!!
 		//System.out.println("Decoded knowing the key : " + sD);
@@ -164,8 +166,14 @@ public class Main {
 		//Encoding
 		byte[] result = Encrypt.cbc(string, randomPad);
 		String s = bytesToString(result);
-		for(int i = 0; i < s.length(); ++i)
-		System.out.println(s.charAt(i));
+		System.out.println("Encoded message:" + s);
+		
+		
+		byte[] decrypted = Decrypt.decryptCBC(result, randomPad);
+		String d = bytesToString(decrypted);
+		System.out.println("Decrypted knowing the key: " + d);
+		
+		
 		//System.out.println("Encoded : " + s);
 
 		/* Decoding with key
