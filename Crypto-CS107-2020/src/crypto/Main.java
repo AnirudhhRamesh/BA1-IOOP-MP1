@@ -88,7 +88,7 @@ public class Main {
 		System.out.println("Caesar encoding key: " + key);
 		System.out.println("Encoded : " + s);
 
-
+		Decrypt.caesarBruteForce(resultCopy);
 	
 		//Decoding with key
 		//String sD = bytesToString(Encrypt.caesar(result, (byte) (-key))); //running result changes the original array!!

@@ -53,8 +53,33 @@ public class Decrypt {
 	public static byte[][] caesarBruteForce(byte[] cipher) {
 		//TODO : COMPLETE THIS METHOD
 		//Attempt breaking using every possible key (-128 to 127) and user manually reads through them all
-		
-		return null; //TODO: to be modified
+		//TODO: Delete this code and rework, figure out how to use byte[][] to store byte values
+		String lineBreak = System.getProperty("line.separator");
+		Helper.writeStringToFile("Brute Force Results" + lineBreak, "bruteForceCaesar.txt", true);
+
+		byte[][] cipherDecryptions = new byte[256][cipher.length];
+		byte[] cipherContainer = new byte[cipher.length];
+		for (int i = 0; i < 256; ++i) {
+			byte[] cipherCopy = new byte[cipher.length]; //To ensure we don't change the source byte reference values
+			
+			for (int j = 0; j < cipher.length; ++j) {
+				cipherCopy[j] = cipher[i];
+			}
+			
+			cipherContainer = Encrypt.caesar(cipherCopy, (byte) (i-128));
+			
+			for (int k = 0; k < cipherCopy.length; ++k) {
+				cipherDecryptions[i] = cipherContainer;
+			}
+			System.out.println(Helper.bytesToString(cipherContainer));
+			
+			Helper.writeStringToFile(Helper.bytesToString(cipherDecryptions[i]) + lineBreak, "bruteForceCaesar.txt", true);
+
+			//System.out.println(Helper.bytesToString(cipherDecryptions[i]));
+			
+			//Print out the results into the text file
+		}
+		return cipherDecryptions; //TODO: to be modified
 	}	
 	
 	
@@ -292,7 +317,7 @@ public class Decrypt {
 			}
 		
 		for(int i = 0; i < keyLength; ++i) {
-			decoded[i] = (byte) (decoded[i] ^ iv[i]);
+			decoded[i] = (byte) (decoded[i] ^ iv[i]); //TODO: is it not possible to directly use cipher[i] here?
 			}
 		
 		for(int i = keyLength; i < decoded.length; ++i) {
