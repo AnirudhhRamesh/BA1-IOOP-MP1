@@ -21,6 +21,7 @@ public class Main {
 		String key = "2cF%5"; //Value shift is 50
 		String customMessage = "bonne journee";//"bonne journée";//"b:1 / , o:2 / , n:3 /, e:3 /, j:1 /, u:1/, r:1/ => 12 characters
 		
+		
 		String messageClean = cleanString(inputMessage);
 		
 		byte[] messageBytes = stringToBytes(messageClean);
@@ -171,7 +172,7 @@ public class Main {
 		
 		byte[] decrypted = Decrypt.decryptCBC(result, randomPad);
 		String d = bytesToString(decrypted);
-		System.out.println("Decrypted knowing the key: " + d);
+		System.out.println("Decrypted message: " + d);
 		
 		
 		//System.out.println("Encoded : " + s);
