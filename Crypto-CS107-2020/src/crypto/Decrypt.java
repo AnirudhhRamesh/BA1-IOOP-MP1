@@ -54,32 +54,26 @@ public class Decrypt {
 		//TODO : COMPLETE THIS METHOD
 		//Attempt breaking using every possible key (-128 to 127) and user manually reads through them all
 		//TODO: Delete this code and rework, figure out how to use byte[][] to store byte values
-		String lineBreak = System.getProperty("line.separator");
-		Helper.writeStringToFile("Brute Force Results" + lineBreak, "bruteForceCaesar.txt", true);
+		
+		//Iterate through all values of keys (256 values)
+		//Store these values inside a byte[][]
+		//Convert to string and write string to bruteForceCaesar.txt
+		
+		String newLine = System.getProperty("line.separator");
+		Helper.writeStringToFile("Brute Force Results" + newLine, "bruteForceCaesar.txt", true);
 
 		byte[][] cipherDecryptions = new byte[256][cipher.length];
-		byte[] cipherContainer = new byte[cipher.length];
+		
 		for (int i = 0; i < 256; ++i) {
-			byte[] cipherCopy = new byte[cipher.length]; //To ensure we don't change the source byte reference values
+			cipherDecryptions[i] = Encrypt.caesar(cipher, (byte) (i-128));
 			
-			for (int j = 0; j < cipher.length; ++j) {
-				cipherCopy[j] = cipher[i];
-			}
-			
-			cipherContainer = Encrypt.caesar(cipherCopy, (byte) (i-128));
-			
-			for (int k = 0; k < cipherCopy.length; ++k) {
-				cipherDecryptions[i] = cipherContainer;
-			}
-			System.out.println(Helper.bytesToString(cipherContainer));
-			
-			Helper.writeStringToFile(Helper.bytesToString(cipherDecryptions[i]) + lineBreak, "bruteForceCaesar.txt", true);
-
-			//System.out.println(Helper.bytesToString(cipherDecryptions[i]));
-			
-			//Print out the results into the text file
+			System.out.println("Key: " + (i - 128) + " " + Helper.bytesToString(Encrypt.caesar(cipher, (byte)(i-128))));
+			Helper.writeStringToFile("Key: " + (i - 128) + " " + Helper.bytesToString(Encrypt.caesar(cipher, (byte)(i-128))) + newLine, "bruteForceCaesar.txt");
+			//Construct string
+			//Helper.writeStringToFile(Helper.bytesToString(cipherDecryptions[i]) + lineBreak, "bruteForceCaesar.txt", true);
 		}
-		return cipherDecryptions; //TODO: to be modified
+		
+		return cipherDecryptions;
 	}	
 	
 	

@@ -70,20 +70,19 @@ public class Encrypt {
 	public static byte[] caesar(byte[] plainText, byte key, boolean spaceEncoding) {
 		assert(plainText != null); //assert => if plaintext is null, then the method will stop running
 		
+		//Ensure that we aren't manipulating data from the source byte[]
+		byte[] plainTextCopy = duplicateArray(plainText);
+		
 		key = keyModulo(key);
 
-		for (int i = 0; i < plainText.length; ++i) {
+		for (int i = 0; i < plainTextCopy.length; ++i) {
 			//if spaces should not be encoded, checks for non space characters and shifts by key
-			
-			if (isNotSpace(spaceEncoding, plainText[i])){ 
-				plainText[i] = (byte)(plainText[i] + key);
+			if (spaceEncoder(spaceEncoding, plainTextCopy[i])){ 
+				plainTextCopy[i] = (byte)(plainTextCopy[i] + key);
 			}
-			
-			//System.out.print(plainText[i] + " ");
 		}
-		//System.out.println();
 
-		return plainText;
+		return plainTextCopy;
 	}
 	
 	/**
@@ -111,12 +110,15 @@ public class Encrypt {
 	public static byte[] xor(byte[] plainText, byte key, boolean spaceEncoding) {
 		assert(plainText != null);
 		
-		for (int i = 0; i < plainText.length; ++i) {
+		//Ensure that we aren't manipulating data from the source byte[]
+		byte[] plainTextCopy = duplicateArray(plainText);
+		
+		for (int i = 0; i < plainTextCopy.length; ++i) {
 			//if spaces should not be encoded, checks for non space characters and shifts by key
 			
 
-			if (isNotSpace(spaceEncoding, plainText[i])){ 
-				plainText[i] = (byte)(plainText[i] ^ key);
+			if (spaceEncoder(spaceEncoding, plainTextCopy[i])){ 
+				plainTextCopy[i] = (byte)(plainTextCopy[i] ^ key);
 
 			//if (isNotSpace(spaceEncoding, plainText[i])){ 
 			//	plainText[i] = (byte)(plainText[i] ^ keyModulo(key));
@@ -127,7 +129,7 @@ public class Encrypt {
 		
 		
 		}// TODO: to be modified
-		return plainText;
+		return plainTextCopy;
 		
 	}
 	/**
@@ -156,11 +158,14 @@ public class Encrypt {
 		assert(plainText != null);
 		int iteratorIndex = 0;
 		
-		for (int i = 0; i < plainText.length; ++i) {
-			byte[] plainTextContainer = {plainText[i]};			
-			plainText[i] = caesar(plainTextContainer, keyModulo(keyword[iteratorIndex]), spaceEncoding)[0];
+		//Ensure that we aren't manipulating data from the source byte[]
+		byte[] plainTextCopy = duplicateArray(plainText);
+		
+		for (int i = 0; i < plainTextCopy.length; ++i) {
+			byte[] plainTextContainer = {plainTextCopy[i]};			
+			plainTextCopy[i] = caesar(plainTextContainer, keyModulo(keyword[iteratorIndex]), spaceEncoding)[0];
 
-			if (isNotSpace(spaceEncoding, plainText[i])) {
+			if (spaceEncoder(spaceEncoding, plainTextCopy[i])) {
 				++iteratorIndex;
 			}
 			
@@ -169,7 +174,7 @@ public class Encrypt {
 			}
 		}
 		
-		return plainText;
+		return plainTextCopy;
 	}
 	
 	/**
@@ -197,20 +202,23 @@ public class Encrypt {
 	 */
 	public static byte[] oneTimePad(byte[] plainText, byte[] pad) {
 		assert(plainText != null);
+		//Ensure that we aren't manipulating data from the source byte[]
+		byte[] plainTextCopy = duplicateArray(plainText);
+		
 		//Verify the pad.length >= plainText.length, else return null
-		if (pad.length < plainText.length) {
+		if (pad.length < plainTextCopy.length) {
 			System.out.println("Error: Failed OTP encoding. Pad length smaller than string length.");
 			return null;
 		}
 		
-		for (int i = 0; i < plainText.length; ++i) {
-			byte[] plainTextContainer = {plainText[i]};			
-			plainText[i] = xor(plainTextContainer, pad[i])[0];
+		for (int i = 0; i < plainTextCopy.length; ++i) {
+			byte[] plainTextContainer = {plainTextCopy[i]};			
+			plainTextCopy[i] = xor(plainTextContainer, pad[i])[0];
 		}
 		
 		//TODO: Remove this text afterwards
 		
-		return plainText;
+		return plainTextCopy;
 	}
 	
 	
@@ -225,14 +233,17 @@ public class Encrypt {
 	public static byte[] cbc(byte[] plainText, byte[] iv) {
 		assert(plainText != null);
 
+		//Ensure that we aren't manipulating data from the source byte[]
+		byte[] plainTextCopy = duplicateArray(plainText);
+		
 		int padSize = iv.length;
 			
 		for (int i = 0; i < padSize; ++i) {
-			plainText[i] = (byte) (plainText[i] ^ iv[i]);
+			plainTextCopy[i] = (byte) (plainTextCopy[i] ^ iv[i]);
 		}
 		
 	    for(int i = padSize; i < (plainText.length); ++i) {
-	    	plainText[i] = (byte) (plainText[i] ^ plainText[i - padSize]);
+	    	plainTextCopy[i] = (byte) (plainTextCopy[i] ^ plainTextCopy[i - padSize]);
 	     }	
     
 		
@@ -248,7 +259,7 @@ public class Encrypt {
 	   // for( int i = 0; i < plainText.length; ++i)
 		//	System.out.println("Text lenght is" + plainText[i]);
 	     
-		return plainText;
+		return plainTextCopy;
 	}
 	
 	
@@ -274,7 +285,7 @@ public class Encrypt {
 	 * @param spaceEncoding if false, then spaces are not encoded
 	 * @param byteValue is the byte that is checked to see whether it represents a space (byte = 32)
 	 */
-	public static boolean isNotSpace(boolean spaceEncoding, byte byteValue) {
+	public static boolean spaceEncoder(boolean spaceEncoding, byte byteValue) {
 		if (!spaceEncoding) {
 			return !(byteValue == (byte)(32));
 		}
@@ -288,5 +299,16 @@ public class Encrypt {
 	public static byte keyModulo(byte key) {
 		return (byte)(key%BYTE_RANGE);
 	}
+	
+	/**
+	 * Method used to duplicate the array, to ensure we aren't directly manipulating inputted arrays into Encrypt methods
+	 * @param array is the array that should be duplicated
+	 */
+	public static byte[] duplicateArray(byte[] array) {
+		byte[] arrayCopy = new byte[array.length];
+		for (int i = 0; i < array.length; ++i)
+			arrayCopy[i] = array[i];
 		
+		return arrayCopy;
+	}
 }
