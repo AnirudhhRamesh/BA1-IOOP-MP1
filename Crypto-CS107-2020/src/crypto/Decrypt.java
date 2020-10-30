@@ -52,7 +52,6 @@ public class Decrypt {
 	 */
 	public static byte[][] caesarBruteForce(byte[] cipher) {
 		//TODO : COMPLETE THIS METHOD
-
 		//Attempt breaking using every possible key (-128 to 127) and user manually reads through them all
 		
 		return null; //TODO: to be modified
@@ -98,7 +97,6 @@ public class Decrypt {
 		}
 
 		return cipherFrequencies;
-		//TODO: Compute frequencies is working well
 	}
 	
 	
@@ -108,7 +106,6 @@ public class Decrypt {
 	 * @return the key
 	 */
 	public static byte caesarFindKey(float[] charFrequencies) {
-		//TODO: There is an algorithmic error somewhere in this function
 		/* Method used:
 		 * 	1. Create an iterator from 0 to 255 (inclusive => 256 values) /
 		 * 	2. Multiply ENGLISHFREQUENCIES with A*0 (It. 0), A*1 (It. 1), ..., A*255 (It. 255) /
@@ -132,27 +129,15 @@ public class Decrypt {
 			
 			for (int j = 0; j < ENGLISHFREQUENCIES.length; ++j) { //Iterates 26 times (through ENGLISH Frequencies.length
 				
-				//System.out.println(ENGLISHFREQUENCIES.length);
-				//System.out.print(ENGLISHFREQUENCIES[j] + " * " + charFrequencies[charFrequenciesIterator] + " + "); //26 iterations here
-				//System.out.println("Scalar Product: " + ENGLISHFREQUENCIES[j] + " * " + charFrequencies[charFrequenciesIterator] + " = " + (ENGLISHFREQUENCIES[j]*charFrequencies[charFrequenciesIterator]));
-
 				scalarProduct += ENGLISHFREQUENCIES[j]*charFrequencies[charFrequenciesIterator]; //a*0 + b*1 + ... + z*25; a*1 + b*2 + ... + z*26; ... ; a*255 + b*0 + ... + z*24;
 				if (charFrequenciesIterator == 255) { //Wrap-around function for the iterator
 					charFrequenciesIterator = -1;
 				}
 				
 				++charFrequenciesIterator;	
-				//System.out.println();
 			}
 			
-			//System.out.println();
-			//System.out.print(charFrequenciesIterator);
-			
 			scalarProducts[i] = scalarProduct;
-			//System.out.println();
-			//System.out.println("Scalar Products Array length: " + scalarProducts.length); //scalarProducts length is 256
-			//System.out.print("Scalar Product: index " + i + " : " + scalarProducts[i]);
-
 			++iterationCounter;
 			charFrequenciesIterator = iterationCounter;
 		}
@@ -209,9 +194,16 @@ public class Decrypt {
 	 * @return the byte encoding of the clear text
 	 */
 	public static byte[] vigenereWithFrequencies(byte[] cipher) {
+		//TODO: Arnie: Task 4
 		//TODO : COMPLETE THIS METHOD
+		/* Method used:
+		 * 	1. Create an iterator from 0 to 255 (inclusive => 256 values) /
+		 * 	2. Multiply ENGLISHFREQUENCIES with A*0 (It. 0), A*1 (It. 1), ..., A*255 (It. 255) /
+		 *  3. Create a wrap-around so if the charFreqIndex goes above 255, it wraps back to 0 /
+		 *  4. Find the index of the biggest scalar product out of all scalar products => Error here: always returns 255
+		 *  Distance between charFrequencies[i] and 97 is the key
+		 */
 		
-		//Arnie
 		return null; //TODO: to be modified
 	}
 	
@@ -224,6 +216,12 @@ public class Decrypt {
 	 */
 	public static List<Byte> removeSpaces(byte[] array){
 		//TODO : COMPLETE THIS METHOD
+		//TODO: Arnie: Task 1
+		//Remove all spaces
+		List<Byte> list = new ArrayList<Byte>();
+		
+		
+		
 		return null;
 	}
 	
@@ -234,7 +232,20 @@ public class Decrypt {
 	 * @return the length of the key
 	 */
 	public static int vigenereFindKeyLength(List<Byte> cipher) {
-		//TODO : Arnie
+		//TODO : Arnie: Task 2
+		
+		/*
+		 * Module 1:
+		 *      -> Iterate through two strings, one that is cipher and cipherShifted(by i), while i < cipher.length -1
+		 *      -> 
+		 *      
+		 * Module 2:
+		 *      -> Identify local maxima of first half of list (use Math.ciel() for odd number list.lengths)
+		 *      -> Store list of indexes in a ArrayList that is ORDERED
+		 *      
+		 * Module 3:
+		 *      -> Use an associative table to find the length of the key
+		 */
 		
 		
 		return -1; //TODO: to be modified
@@ -250,8 +261,14 @@ public class Decrypt {
 	 * @return the inverse key to decode the Vigenere cipher text
 	 */
 	public static byte[] vigenereFindKey(List<Byte> cipher, int keyLength) {
-		//TODO : Arnie
+		//TODO : Arnie: Task 3
 		
+		/*
+		 * Recover the key values:
+		 *      -> Divide the cipher by keyLength, into keyLength strings
+		 *      -> Use caesarFindFrequency on each of these new strings created
+		 *      -> Store the final keyarray into an array and return
+		 */
 		
 		return null; //TODO: to be modified
 	}

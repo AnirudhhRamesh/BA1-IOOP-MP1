@@ -17,7 +17,7 @@ public class Main {
 	public static void main(String args[]) {
 		
 		
-		String inputMessage = Helper.readStringFromFile("text_one.txt");
+		String inputMessage = Helper.readStringFromFile("text_two.txt");
 		String key = "2cF%5"; //Value shift is 50
 		String customMessage = "bonne journee";//"bonne journée";//"b:1 / , o:2 / , n:3 /, e:3 /, j:1 /, u:1/, r:1/ => 12 characters
 		
@@ -25,7 +25,7 @@ public class Main {
 		
 		byte[] messageBytes = stringToBytes(messageClean);
 		byte[] customMessageBytes = stringToBytes(customMessage);
-		byte[] keyBytes = stringToBytes(key);
+		byte[] keyBytes = {(byte)70};//stringToBytes(key);
 		
 		System.out.println("Original input sanitized : " + messageClean);
 		System.out.println();
@@ -88,8 +88,8 @@ public class Main {
 
 		
 		//Decoding with key
-		String sD = bytesToString(Encrypt.caesar(result, (byte) (-key))); //running result changes the original array!!
-		System.out.println("Decoded knowing the key : " + sD);
+		//String sD = bytesToString(Encrypt.caesar(result, (byte) (-key))); //running result changes the original array!!
+		//System.out.println("Decoded knowing the key : " + sD);
 		//By decoding result with array, you are changing the values of result
 		//This changes the value that is decoded using the Frequency Profiler!!
 		System.out.println();
