@@ -42,7 +42,7 @@ public class Main {
 		testVigenere(Helper.stringToBytes(customMessage), vigenereTempKeyTester);
 
 		System.out.println("------XOR------");
-		testXOR(messageBytes, keyBytes[0]);
+		//testXOR(messageBytes, keyBytes[0]);
 		testXOR(Helper.stringToBytes(customMessage), (byte)7);
 		
 		System.out.println("------One Time Pad------");
@@ -133,7 +133,8 @@ public class Main {
 		String s = bytesToString(result);
 		System.out.println("Caesar encoding key: " + key);
 		System.out.println("Encoded : " + s);
-
+		
+		
 		//Decrypt.caesarBruteForce(resultCopy);
 	
 		//Decoding with key
@@ -153,7 +154,8 @@ public class Main {
 		
 		byte[][] bruteForceResult = Decrypt.caesarBruteForce(resultCopy);
 		String sDA = Decrypt.arrayToString(bruteForceResult);
-		Helper.writeStringToFile(sDA, "bruteForceCaesar.txt");
+	    Helper.writeStringToFile(sDA, "bruteForceCaesar.txt");
+		
 		
 		//TODO: BruteForce decoding
 		/*
@@ -187,13 +189,27 @@ public class Main {
 	
 	public static void testXOR(byte[] string , byte key) {		
 		//Encoding
+		
+
 		byte[] result = Encrypt.xor(string, key);
+		
+        byte[] resultCopy = new byte[result.length];
+		
+		for (int i = 0; i < result.length; ++i)
+			resultCopy[i] = result[i];
+		
 		String s = bytesToString(result);
 		System.out.println("Encoded : " + s);
 
 		//Decoding with key
 		String sD = bytesToString(Encrypt.xor(result, (byte) (key)));
 		System.out.println("Decoded knowing the key : " + sD);
+		
+		byte[][] bruteForceResult = Decrypt.xorBruteForce(resultCopy);
+		String sDA = Decrypt.arrayToString(bruteForceResult);
+	    Helper.writeStringToFile(sDA, "bruteForceXor.txt");
+		
+		
 		
 		System.out.println();
 	}

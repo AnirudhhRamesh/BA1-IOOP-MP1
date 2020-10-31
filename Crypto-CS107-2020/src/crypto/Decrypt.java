@@ -37,8 +37,17 @@ public class Decrypt {
 	 */
 	public static String arrayToString(byte[][] bruteForceResult) {
 		//TODO : COMPLETE THIS METHOD
-		
-		return null; //TODO: to be modified
+		String s = null;
+		for(int i = 0; i < 256; ++i) {
+			s += bytesToString(bruteForceResult[i]) + System.lineSeparator();
+			
+			
+			
+			
+			
+		}
+			
+		return s; //TODO: to be modified
 	}
 	
 	
@@ -59,21 +68,22 @@ public class Decrypt {
 		//Store these values inside a byte[][]
 		//Convert to string and write string to bruteForceCaesar.txt
 		
-		String newLine = System.getProperty("line.separator");
-		Helper.writeStringToFile("Brute Force Results" + newLine, "bruteForceCaesar.txt", true);
+		//String newLine = System.getProperty("line.separator");
+		//Helper.writeStringToFile("Brute Force Results" + newLine, "bruteForceCaesar.txt", true);
 
 		byte[][] cipherDecryptions = new byte[256][cipher.length];
 		
 		for (int i = 0; i < 256; ++i) {
-			cipherDecryptions[i] = Encrypt.caesar(cipher, (byte) (i-128));
-			
-			System.out.println("Key: " + (i - 128) + " " + Helper.bytesToString(Encrypt.caesar(cipher, (byte)(i-128))));
-			Helper.writeStringToFile("Key: " + (i - 128) + " " + Helper.bytesToString(Encrypt.caesar(cipher, (byte)(i-128))) + newLine, "bruteForceCaesar.txt");
+				cipherDecryptions[i] = Encrypt.caesar(cipher, (byte) (i-128));
+		
+			//System.out.println("Key: " + (i - 128) + " " + Helper.bytesToString(Encrypt.caesar(cipher, (byte)(i-128))));
+		//	Helper.writeStringToFile("Key: " + (i - 128) + " " + Helper.bytesToString(Encrypt.caesar(cipher, (byte)(i-128))) + newLine, "bruteForceCaesar.txt");
 			//Construct string
 			//Helper.writeStringToFile(Helper.bytesToString(cipherDecryptions[i]) + lineBreak, "bruteForceCaesar.txt", true);
 			
 			//TODO: Use arrayToString method to convert 2D byte array into String, then save to txt file
 		}
+		
 		
 		return cipherDecryptions;
 	}	
@@ -191,10 +201,17 @@ public class Decrypt {
 	 * @return the array of possibilities for the clear text
 	 */
 	public static byte[][] xorBruteForce(byte[] cipher) {
+		
+        byte[][] cipherDecryptions = new byte[256][cipher.length];
+		
+		for (int i = 0; i < 256; ++i) {
+				cipherDecryptions[i] = Encrypt.xor(cipher, (byte) (i-128));
+		}
+		
 		//TODO : COMPLETE THIS METHOD
 		//Attempt breaking using every possible key (-128 to 127) and user manually reads through them all
 
-		return null; //TODO: to be modified
+		return cipherDecryptions; //TODO: to be modified
 	}
 	
 	
