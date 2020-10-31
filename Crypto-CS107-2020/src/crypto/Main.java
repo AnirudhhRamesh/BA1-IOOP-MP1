@@ -33,8 +33,8 @@ public class Main {
 		System.out.println();
 		
 		System.out.println("------Caesar------");
-		testCaesar(messageBytes, keyBytes[0]);
-		//testCaesar(Helper.stringToBytes(customMessage), (byte)3);
+		//testCaesar(messageBytes, keyBytes[0]);
+		testCaesar(Helper.stringToBytes(customMessage), (byte)3);
 		
 		System.out.println("------Vigenere------");
 		testVigenere(messageBytes, keyBytes);
@@ -134,7 +134,7 @@ public class Main {
 		System.out.println("Caesar encoding key: " + key);
 		System.out.println("Encoded : " + s);
 
-		Decrypt.caesarBruteForce(resultCopy);
+		//Decrypt.caesarBruteForce(resultCopy);
 	
 		//Decoding with key
 		//String sD = bytesToString(Encrypt.caesar(result, (byte) (-key))); //running result changes the original array!!
@@ -151,7 +151,7 @@ public class Main {
 		
 		System.out.println();
 		
-		byte[][] bruteForceResult = Decrypt.caesarBruteForce(result);
+		byte[][] bruteForceResult = Decrypt.caesarBruteForce(resultCopy);
 		String sDA = Decrypt.arrayToString(bruteForceResult);
 		Helper.writeStringToFile(sDA, "bruteForceCaesar.txt");
 		

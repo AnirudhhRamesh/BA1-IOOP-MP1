@@ -37,11 +37,11 @@ public class Decrypt {
 	 */
 	public static String arrayToString(byte[][] bruteForceResult) {
 		
-		String s = null;
+		String s = "";
 		
 		for(int i = 0; i < bruteForceResult.length; ++i) {
 			s += bytesToString(bruteForceResult[i]);
-		    System.lineSeparator();
+		    System.out.println(" ");;
 		    }
 		    
 		
