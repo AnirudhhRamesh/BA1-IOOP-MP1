@@ -28,7 +28,7 @@ public class Main {
 		byte[] customMessageBytes = stringToBytes(customMessage);
 		byte[] keyBytes = stringToBytes(key);//{(byte)70};//
 
-		/*
+		
 		System.out.println("Original input sanitized : " + messageClean);
 		System.out.println();
 		
@@ -69,7 +69,7 @@ public class Main {
 
 		System.out.println("Testing caesar frequencies calculation");
 		//byte test = Decrypt.caesarWithFrequencies(messageBytes); //input a cipher text (instead of clean text
-		*/
+		
 		// TODO: TO BE COMPLETED
 		
 		//----------------------- Caesar Freq. Profilers-------------------------
@@ -151,12 +151,14 @@ public class Main {
 		
 		System.out.println();
 		
-		//TODO: BruteForce decoding
-		/*
-		//Decoding without key
 		byte[][] bruteForceResult = Decrypt.caesarBruteForce(result);
 		String sDA = Decrypt.arrayToString(bruteForceResult);
 		Helper.writeStringToFile(sDA, "bruteForceCaesar.txt");
+		
+		//TODO: BruteForce decoding
+		/*
+		//Decoding without key
+		
 		
 		byte decodingKey = Decrypt.caesarWithFrequencies(result);
 		String sFD = bytesToString(Encrypt.caesar(result, decodingKey));

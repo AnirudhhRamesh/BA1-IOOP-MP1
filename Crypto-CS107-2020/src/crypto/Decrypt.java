@@ -36,9 +36,19 @@ public class Decrypt {
 	 * @param bruteForceResult a 2D byte array containing the result of a brute force method
 	 */
 	public static String arrayToString(byte[][] bruteForceResult) {
+		
+		String s = null;
+		
+		for(int i = 0; i < bruteForceResult.length; ++i) {
+			s += bytesToString(bruteForceResult[i]);
+		    System.lineSeparator();
+		    }
+		    
+		
+		
 		//TODO : COMPLETE THIS METHOD
 		
-		return null; //TODO: to be modified
+		return s; //TODO: to be modified
 	}
 	
 	
@@ -51,6 +61,9 @@ public class Decrypt {
 	 * @return a 2D byte array containing all the possibilities
 	 */
 	public static byte[][] caesarBruteForce(byte[] cipher) {
+		
+		byte[][] cipherDecryptions = new byte[256][cipher.length];
+		
 		//TODO : COMPLETE THIS METHOD
 		//Attempt breaking using every possible key (-128 to 127) and user manually reads through them all
 		//TODO: Delete this code and rework, figure out how to use byte[][] to store byte values
@@ -58,23 +71,36 @@ public class Decrypt {
 		//Iterate through all values of keys (256 values)
 		//Store these values inside a byte[][]
 		//Convert to string and write string to bruteForceCaesar.txt
+		//byte[] decoded = new byte[cipher.length];
+		//	for(int i = 0; i < cipher.length; ++i) {
+		//	decoded[i] = cipher[i]; 
+	//}
 		
-		String newLine = System.getProperty("line.separator");
-		Helper.writeStringToFile("Brute Force Results" + newLine, "bruteForceCaesar.txt", true);
-
-		byte[][] cipherDecryptions = new byte[256][cipher.length];
-		
-		for (int i = 0; i < 256; ++i) {
-			cipherDecryptions[i] = Encrypt.caesar(cipher, (byte) (i-128));
+		for(int i = 0; i < 256; ++i) {
+			for(int j = 0; j < cipher.length; ++j) {
+			cipherDecryptions[i][j] = Encrypt.caesar(cipher, (byte) (i - 128))[j];
+			}
+		}
+			 
 			
-			System.out.println("Key: " + (i - 128) + " " + Helper.bytesToString(Encrypt.caesar(cipher, (byte)(i-128))));
-			Helper.writeStringToFile("Key: " + (i - 128) + " " + Helper.bytesToString(Encrypt.caesar(cipher, (byte)(i-128))) + newLine, "bruteForceCaesar.txt");
+		
+	//	String newLine = System.getProperty("line.separator");
+   //  Helper.writeStringToFile("Brute Force Results" + newLine, "bruteForceCaesar.txt", true);
+
+		
+		
+		
+			
+		//	System.out.println("Key: " + (i - 128) + " " + Helper.bytesToString(Encrypt.caesar(cipher, (byte)(i-128))));
+		//	Helper.writeStringToFile("Key: " + (i - 128) + " " + Helper.bytesToString(Encrypt.caesar(cipher, (byte)(i-128))) + newLine, "bruteForceCaesar.txt");
 			//Construct string
 			//Helper.writeStringToFile(Helper.bytesToString(cipherDecryptions[i]) + lineBreak, "bruteForceCaesar.txt", true);
+			
+			return cipherDecryptions;
 		}
 		
-		return cipherDecryptions;
-	}	
+		
+		
 	
 	
 	/**
