@@ -19,7 +19,7 @@ public class Main {
 		
 		String inputMessage = Helper.readStringFromFile("text_two.txt");
 		String key = "2cF%5"; //Value shift[0] is 50. KeyLength = 5
-		String customMessage = "bonne journee";//"bonne journée";//"b:1 / , o:2 / , n:3 /, e:3 /, j:1 /, u:1/, r:1/ => 12 characters
+		String customMessage = "bonne journée";
 		
 		
 		String messageClean = cleanString(inputMessage);
