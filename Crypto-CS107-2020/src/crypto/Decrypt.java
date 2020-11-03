@@ -36,18 +36,12 @@ public class Decrypt {
 	 * @param bruteForceResult a 2D byte array containing the result of a brute force method
 	 */
 	public static String arrayToString(byte[][] bruteForceResult) {
-		//TODO : COMPLETE THIS METHOD
 		String s = null;
 		for(int i = 0; i < 256; ++i) {
 			s += bytesToString(bruteForceResult[i]) + System.lineSeparator();
-			
-			
-			
-			
-			
 		}
 			
-		return s; //TODO: to be modified
+		return s;
 	}
 	
 	
