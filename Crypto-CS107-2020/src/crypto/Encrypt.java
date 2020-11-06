@@ -30,7 +30,7 @@ public class Encrypt {
 	public static String encrypt(String message, String key, int type) {
 
 		String output = null;
-		// TODO: COMPLETE THIS METHOD
+	
 		byte[] plainText = Helper.stringToBytes(message);
 		assert (plainText != null);
 
@@ -39,7 +39,7 @@ public class Encrypt {
 
 		while ((type < 0) || (type > 4)) {
 			
-			System.out.println("False input. Please enter a type that is within the range of 0-4: 0 = Caesar; 1 = Vigenere; 2 = XOR; 3 = One-time pad; 4 = CBC;");
+			System.out.println("False input. Please enter a type that is within the range of 0-4 : 0 = Caesar; 1 = Vigenere; 2 = XOR; 3 = One-time pad; 4 = CBC;");
 		}
 		if (type == CAESAR) {
 			output = bytesToString(caesar(plainText, keyByte)); // By default, space encoding is off for Caesar
