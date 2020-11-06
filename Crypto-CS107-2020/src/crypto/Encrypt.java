@@ -28,32 +28,34 @@ public class Encrypt {
 	 * if the method is called with an unknown type of algorithm, it returns the original message
 	 */
 	public static String encrypt(String message, String key, int type) {
+
+		String output = null;
 		// TODO: COMPLETE THIS METHOD
 		byte[] plainText = Helper.stringToBytes(message);
-		assert(plainText != null);
-		
+		assert (plainText != null);
+
 		byte[] keyBytes = Helper.stringToBytes(key);
 		byte keyByte = keyBytes[0];
-		
-		while ((type < 0)||(type > 4)){
+
+		while ((type < 0) || (type > 4)) {
+			
 			System.out.println("False input. Please enter a type that is within the range of 0-4: 0 = Caesar; 1 = Vigenere; 2 = XOR; 3 = One-time pad; 4 = CBC;");
 		}
-		if (type == CAESAR){
-			caesar(plainText, keyByte); //By default, space encoding is off for Caesar
+		if (type == CAESAR) {
+			output = bytesToString(caesar(plainText, keyByte)); // By default, space encoding is off for Caesar
+		} else if (type == VIGENERE) {
+			output = bytesToString(vigenere(plainText, keyBytes));
+		} else if (type == XOR) {
+			output = bytesToString(xor(plainText, keyByte));
+			// By default, space encoding is OFF for XOR
+		} else if (type == ONETIME) {
+			output = bytesToString(oneTimePad(plainText, keyBytes));
+			// By default, space encoding is ON for Onetimepad
+		} else if (type == CBC) {
+			output = bytesToString(cbc(plainText, keyBytes));
+			// By default, space encoding is ON for CBC
 		}
-		else if (type == VIGENERE) {
-			//By default, space encoding is OFF for Vigenere
-		}
-		else if (type == XOR) {
-			//By default, space encoding is OFF for XOR
-		}
-		else if (type == ONETIME) {
-			//By default, space encoding is ON for Onetimepad
-		}
-		else if (type == CBC) {
-			//By default, space encoding is ON for CBC
-		}
-		return null; // TODO: to be modified
+		return output; // TODO: to be modified
 	}
 	
 	
