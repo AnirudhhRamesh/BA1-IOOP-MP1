@@ -37,14 +37,22 @@ public class Main {
 		
 		System.out.println("------Caesar------");
 		//testCaesar(messageBytes, keyBytes[0]);
+		
+		
 		testCaesar(Helper.stringToBytes(customMessage), (byte)3);
 		
 		System.out.println("------Vigenere------");
+		
+		
 		testVigenere(messageBytes, keyBytes);
-		byte[] vigenereTempKeyTester = {(byte) 1, (byte) 2, (byte) 3};
+		byte[] vigenereTempKeyTester = { (byte) 1, (byte) 2, (byte) 3 };
 		testVigenere(Helper.stringToBytes(customMessage), vigenereTempKeyTester);
 
 		System.out.println("------XOR------");
+		
+		
+		
+        
 		//testXOR(messageBytes, keyBytes[0]);
 		testXOR(Helper.stringToBytes(customMessage), (byte)7);
 		
@@ -268,19 +276,26 @@ public class Main {
 		System.out.println();
 	}
 	
+	   
 //TODO : TO BE COMPLETED	
 }
 
+
+
 //Write the shell method here in the main
-class Shell {
+/* class Shell {
+
 	static Scanner scanner = new Scanner(System.in);
-	
-	private boolean isFinished = false;
-	
-	while (!(isFinished)){
+
+	private boolean isFinished;
+
+	while(!(isFinished))
+	{
 		scanner.next();
 	}
 }
+*/
+
 
 
 

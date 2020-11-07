@@ -24,11 +24,33 @@ public class Decrypt {
 	 * @return the decoded string or the original encoded message if type is not in the list above.
 	 */
 	public static String breakCipher(String cipher, int type) {
+
+		byte[] plainText = stringToBytes(cipher);
+		String output = null;
+
+		byte[] keywordInverse = new byte[vigenereWithFrequencies(plainText).length];
+		for (int i = 0; i < vigenereWithFrequencies(plainText).length; ++i) {
+			keywordInverse[i] = (byte) (-(vigenereWithFrequencies(plainText)[i]));
+		}
+
+		while ((type < 0) || (type > 2))
+			System.out.println(
+					"False input. Please enter a type that is within the range of 0-2: 0 = Caesar; 1 = Vigenere; 2 = XOR");
+
+		if (type == Encrypt.CAESAR)
+			output = bytesToString(Encrypt.caesar(plainText, (byte) (-(caesarWithFrequencies(plainText)))));
+		else if (type == Encrypt.VIGENERE)
+			output = bytesToString(Encrypt.vigenere(plainText, keywordInverse));
+		else if (type == Encrypt.XOR)
+			output = arrayToString(xorBruteForce(plainText));
 		
-		//TODO: COMPLETE THIS METHOD
+			
+			
+			
+		
 		
 		//The method should be such that if you call it with cipher and type, it will decrypt the message
-		return null; //TODO: to be modified
+		return output; //TODO: to be modified
 	}
 	
 	
@@ -176,10 +198,6 @@ public class Decrypt {
 		int trueByte = maxScalarProductIndex - 128; //Since we stored the charFrequencies as (byte) cipherText[j] + 128, we must subtract the 128 to retrieve the original key
 		int tempKey = (trueByte - 97); 
 		
-		if (tempKey < 0) {
-			tempKey *= -1;
-		}
-		
 		key = (byte)(tempKey);	//Calculates the absolute value (= distance between 'a'(97) and index)
 		
 		return key;
@@ -203,7 +221,7 @@ public class Decrypt {
 				cipherDecryptions[i] = Encrypt.xor(cipher, (byte) (i-128));
 		}
 		
-		//TODO : COMPLETE THIS METHOD
+		
 		//Attempt breaking using every possible key (-128 to 127) and user manually reads through them all
 
 		return cipherDecryptions; //TODO: to be modified
@@ -233,7 +251,7 @@ public class Decrypt {
 		
 		byte[] vigenereKey = Decrypt.vigenereFindKey(cleanCipher, keyLength);
 		
-		cleanCipher.add(0, 45);
+		
 		return vigenereKey;
 	}
 	

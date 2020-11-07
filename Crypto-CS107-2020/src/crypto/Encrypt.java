@@ -218,7 +218,7 @@ public class Encrypt {
 			plainTextCopy[i] = xor(plainTextContainer, pad[i])[0];
 		}
 		
-		//TODO: Remove this text afterwards
+		
 		
 		return plainTextCopy;
 	}
@@ -247,19 +247,6 @@ public class Encrypt {
 	    for(int i = padSize; i < (plainText.length); ++i) {
 	    	plainTextCopy[i] = (byte) (plainTextCopy[i] ^ plainTextCopy[i - padSize]);
 	     }	
-    
-		
-		// TODO: COMPLETE THIS METHOD
-		//The string might not always end when the block ends, so be sure to program in terms of string.length and not block.length when iterating through
-		//Verify the pad.length >= plainText.length, else return null
-		//Make sure you can unencode the file
-		
-		//XOR key with the first key.length terms of the plainText (Step 1)
-		//XOR next key.length terms of plainText with previously ciphered plainText block (Step 2)
-		//Repeat Step 2 until the end
-	    
-	   // for( int i = 0; i < plainText.length; ++i)
-		//	System.out.println("Text lenght is" + plainText[i]);
 	     
 		return plainTextCopy;
 	}
