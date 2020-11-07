@@ -2,6 +2,9 @@ package crypto;
 
 import static crypto.Helper.cleanString;
 import static crypto.Helper.stringToBytes;
+
+import java.util.Scanner;
+
 import static crypto.Helper.bytesToString;
 
 /*
@@ -10,9 +13,9 @@ import static crypto.Helper.bytesToString;
  * Part 3: frequency analysis and key-length search
  * Bonus: CBC with encryption, shell
  */
+
 public class Main {
-	
-	
+		
 	//---------------------------MAIN---------------------------
 	public static void main(String args[]) {
 		
@@ -265,6 +268,22 @@ public class Main {
 		System.out.println();
 	}
 	
-//TODO : TO BE COMPLETED
-	
+//TODO : TO BE COMPLETED	
 }
+
+//Write the shell method here in the main
+class Shell {
+	static Scanner scanner = new Scanner(System.in);
+	
+	private boolean isFinished = false;
+	
+	while (!(isFinished)){
+		scanner.next();
+	}
+}
+
+
+
+
+
+

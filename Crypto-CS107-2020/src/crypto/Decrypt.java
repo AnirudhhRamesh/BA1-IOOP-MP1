@@ -233,6 +233,7 @@ public class Decrypt {
 		
 		byte[] vigenereKey = Decrypt.vigenereFindKey(cleanCipher, keyLength);
 		
+		cleanCipher.add(0, 45);
 		return vigenereKey;
 	}
 	
