@@ -25,7 +25,7 @@ public class Decrypt {
 	 */
 	public static String breakCipher(String cipher, int type) {
 		
-		//TODO  COMPLETE THIS METHOD
+		//TODO: COMPLETE THIS METHOD
 		
 		//The method should be such that if you call it with cipher and type, it will decrypt the message
 		return null; //TODO: to be modified
