@@ -130,7 +130,7 @@ public class Encrypt {
 		}
 		
 		
-		}// TODO: to be modified
+		}
 		return plainTextCopy;
 		
 	}
@@ -240,12 +240,12 @@ public class Encrypt {
 		
 		int padSize = iv.length;
 			
-		for (int i = 0; i < padSize; ++i) {
+		for (int i = 0; i < padSize; ++i) { //Encrypts the first characters corresponding to the pad's size
 			plainTextCopy[i] = (byte) (plainTextCopy[i] ^ iv[i]);
 		}
 		
-	    for(int i = padSize; i < (plainText.length); ++i) {
-	    	plainTextCopy[i] = (byte) (plainTextCopy[i] ^ plainTextCopy[i - padSize]);
+	    for(int i = padSize; i < (plainText.length); ++i) { 
+	    	plainTextCopy[i] = (byte) (plainTextCopy[i] ^ plainTextCopy[i - padSize]); //Encrypts the rest of the message
 	     }	
 	     
 		return plainTextCopy;

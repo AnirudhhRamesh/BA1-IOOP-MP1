@@ -28,7 +28,7 @@ public class Decrypt {
 		byte[] plainText = stringToBytes(cipher);
 		String output = null;
 
-		byte[] keywordInverse = new byte[vigenereWithFrequencies(plainText).length];
+		byte[] keywordInverse = new byte[vigenereWithFrequencies(plainText).length]; //Calculates the inverse keyword for Vigenere
 		for (int i = 0; i < vigenereWithFrequencies(plainText).length; ++i) {
 			keywordInverse[i] = (byte) (-(vigenereWithFrequencies(plainText)[i]));
 		}
@@ -62,7 +62,8 @@ public class Decrypt {
 		String s = null;
 		for(int i = 0; i < 256; ++i) {
 			s += bytesToString(bruteForceResult[i]) + System.lineSeparator();
-		}
+		} 
+		//Iterates through all the lines of bruteForceResult and adds each line to a new line in the String s
 			
 		return s;
 	}
@@ -77,28 +78,14 @@ public class Decrypt {
 	 * @return a 2D byte array containing all the possibilities
 	 */
 	public static byte[][] caesarBruteForce(byte[] cipher) {
-		//TODO : COMPLETE THIS METHOD
-		//Attempt breaking using every possible key (-128 to 127) and user manually reads through them all
-		//TODO: Delete this code and rework, figure out how to use byte[][] to store byte values
 		
-		//Iterate through all values of keys (256 values)
-		//Store these values inside a byte[][]
-		//Convert to string and write string to bruteForceCaesar.txt
 		
-		//String newLine = System.getProperty("line.separator");
-		//Helper.writeStringToFile("Brute Force Results" + newLine, "bruteForceCaesar.txt", true);
-
-		byte[][] cipherDecryptions = new byte[256][cipher.length];
+		byte[][] cipherDecryptions = new byte[256][cipher.length]; 
 		
-		for (int i = 0; i < 256; ++i) {
-				cipherDecryptions[i] = Encrypt.caesar(cipher, (byte) (i-128));
+		for (int i = 0; i < 256; ++i) { //Iterates through all possible 256 key values
+				cipherDecryptions[i] = Encrypt.caesar(cipher, (byte) (i-128)); //Adds the decrypted message to a row in CipherDecryptions. Every row corresponds to a different key.
 		
-			//System.out.println("Key: " + (i - 128) + " " + Helper.bytesToString(Encrypt.caesar(cipher, (byte)(i-128))));
-		//	Helper.writeStringToFile("Key: " + (i - 128) + " " + Helper.bytesToString(Encrypt.caesar(cipher, (byte)(i-128))) + newLine, "bruteForceCaesar.txt");
-			//Construct string
-			//Helper.writeStringToFile(Helper.bytesToString(cipherDecryptions[i]) + lineBreak, "bruteForceCaesar.txt", true);
-			
-			//TODO: Use arrayToString method to convert 2D byte array into String, then save to txt file
+	
 		}
 		
 		

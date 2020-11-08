@@ -37,10 +37,10 @@ public class Main {
 		System.out.println();
 		
 		System.out.println("------Caesar------");
-		//testCaesar(messageBytes, keyBytes[0]);
+		testCaesar(messageBytes, keyBytes[0]);
 		
 		
-		testCaesar(Helper.stringToBytes(customMessage), (byte)3);
+		//testCaesar(Helper.stringToBytes(customMessage), (byte)3);
 		
 		System.out.println("------Vigenere------");
 		
@@ -159,7 +159,7 @@ public class Main {
 		
 		//Decoding using Frequency Profile
 		//byte keyFP = Decrypt.caesarWithFrequencies(result); //returns the key of the shift
-		String sDFP = bytesToString(Encrypt.caesar(resultCopy, (byte) (Decrypt.caesarWithFrequencies(resultCopy))));
+		String sDFP = bytesToString(Encrypt.caesar(resultCopy, (byte) (-(Decrypt.caesarWithFrequencies(resultCopy)))));
 		System.out.println("Decoded using Frequency Profile: " + sDFP);
 		
 		System.out.println();
@@ -277,34 +277,47 @@ public class Main {
 		System.out.println();
 	}
 	
+}
+
+class Shell {
+	
+	static Scanner scan = new Scanner(System.in);
+	static String input;
 	
 	
 	
-	//Write the shell method here in the main
-
-/*class Shell {
-
-	 Scanner scan = new Scanner(System.in);
-
-	 boolean isFinished = false;
-	 
-	while(!(isFinished == false)) {
-		System.out.println("");
+	public static void shellInit() {
+		
+		System.out.println("Welcome to Shell! Please type Help to display all possible commands.");
+		
+		input = scan.next();
+		
+		if(input.equals("Help"))
+				helper();
+	
+		if(input.equals("Encrypt"));
+		
+		
+		this is not a command, please type a valid command
+				
+		
+		
+		
+	}
+	
+	public static void helper() {
+		
+		System.out.println("Here are the available commands: ");
+		System.out.println("Type 'Encrypt' if you would like to encrypt a message");
+		System.out.println("Type 'Decrypt if you would like to decrypt a message");
 	}
 	
 	
-
+	
 }
-*/
 
-	 
-	
-		
-	
-	
-	   
-//TODO : TO BE COMPLETED	
-}
+
+
 
 
 
