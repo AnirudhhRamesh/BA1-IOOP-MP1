@@ -21,8 +21,6 @@ public class Main {
 	public static void main(String args[]) {
 		
 		
-		
-		
 		String inputMessage = Helper.readStringFromFile("text_two.txt");
 		String key = "2cF%5"; //Value shift[0] is 50. KeyLength = 5
 		String customMessage = "bonne journée";
@@ -284,7 +282,7 @@ public class Main {
 	
 	//Write the shell method here in the main
 
-class Shell {
+/*class Shell {
 
 	 Scanner scan = new Scanner(System.in);
 
@@ -297,6 +295,7 @@ class Shell {
 	
 
 }
+*/
 
 	 
 	
@@ -306,7 +305,7 @@ class Shell {
 	   
 //TODO : TO BE COMPLETED	
 }
-}
+
 
 
 
