@@ -1,4 +1,5 @@
 package crypto;
+import java.util.Scanner;
 
 import static crypto.Helper.cleanString;
 import static crypto.Helper.stringToBytes;
@@ -18,6 +19,8 @@ public class Main {
 		
 	//---------------------------MAIN---------------------------
 	public static void main(String args[]) {
+		
+		
 		
 		
 		String inputMessage = Helper.readStringFromFile("text_two.txt");
@@ -276,25 +279,38 @@ public class Main {
 		System.out.println();
 	}
 	
+	
+	
+	
+	//Write the shell method here in the main
+
+class Shell {
+
+	 Scanner scan = new Scanner(System.in);
+
+	 boolean isFinished = false;
+	 
+	while(!(isFinished == false)) {
+		System.out.println("");
+	}
+	
+	
+
+}
+
+	 
+	
+		
+	
+	
 	   
 //TODO : TO BE COMPLETED	
 }
-
-
-
-//Write the shell method here in the main
-/* class Shell {
-
-	static Scanner scanner = new Scanner(System.in);
-
-	private boolean isFinished;
-
-	while(!(isFinished))
-	{
-		scanner.next();
-	}
 }
-*/
+
+
+
+
 
 
 
