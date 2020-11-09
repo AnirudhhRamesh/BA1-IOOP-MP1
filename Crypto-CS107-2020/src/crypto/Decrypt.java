@@ -13,8 +13,8 @@ public class Decrypt {
 	
 	
 	public static final int ALPHABETSIZE = Byte.MAX_VALUE - Byte.MIN_VALUE + 1 ; //256
-	public static final int APOSITION = 97 + ALPHABETSIZE/2; 
-	
+	public static final int APOSITION = 97 + ALPHABETSIZE/2; //This provided constant is not 97, so we will not use it
+	public static final int AVALUE = 97; //The value of lowercase 'a' in java byte representation
 	//source : https://en.wikipedia.org/wiki/Letter_frequency
 	public static final double[] ENGLISHFREQUENCIES = {0.08497,0.01492,0.02202,0.04253,0.11162,0.02228,0.02015,0.06094,0.07546,0.00153,0.01292,0.04025,0.02406,0.06749,0.07507,0.01929,0.00095,0.07587,0.06327,0.09356,0.02758,0.00978,0.0256,0.0015,0.01994,0.00077};
 	
@@ -24,33 +24,30 @@ public class Decrypt {
 	 * @return the decoded string or the original encoded message if type is not in the list above.
 	 */
 	public static String breakCipher(String cipher, int type) {
+		//The method should be such that if you call it with cipher and type, it will decrypt the message
 
 		byte[] plainText = stringToBytes(cipher);
 		String output = null;
 
 		byte[] keywordInverse = new byte[vigenereWithFrequencies(plainText).length]; //Calculates the inverse keyword for Vigenere
-		for (int i = 0; i < vigenereWithFrequencies(plainText).length; ++i) {
+				
+		for (int i = 0; i < (vigenereWithFrequencies(plainText).length); ++i) {
 			keywordInverse[i] = (byte) (-(vigenereWithFrequencies(plainText)[i]));
 		}
 
 		while ((type < 0) || (type > 2))
-			System.out.println(
-					"False input. Please enter a type that is within the range of 0-2: 0 = Caesar; 1 = Vigenere; 2 = XOR");
+			System.out.println("False input. Please enter a type that is within the range of 0-2: 0 = Caesar; 1 = Vigenere; 2 = XOR");
 
-		if (type == Encrypt.CAESAR)
+		if (type == Encrypt.CAESAR) //CAESAR = 0
 			output = bytesToString(Encrypt.caesar(plainText, (byte) (-(caesarWithFrequencies(plainText)))));
-		else if (type == Encrypt.VIGENERE)
+		
+		else if (type == Encrypt.VIGENERE) //VIGENERE = 1
 			output = bytesToString(Encrypt.vigenere(plainText, keywordInverse));
-		else if (type == Encrypt.XOR)
+		
+		else if (type == Encrypt.XOR) //XOR = 2
 			output = arrayToString(xorBruteForce(plainText));
 		
-			
-			
-			
-		
-		
-		//The method should be such that if you call it with cipher and type, it will decrypt the message
-		return output; //TODO: to be modified
+		return output;
 	}
 	
 	
@@ -60,7 +57,7 @@ public class Decrypt {
 	 */
 	public static String arrayToString(byte[][] bruteForceResult) {
 		String s = null;
-		for(int i = 0; i < 256; ++i) {
+		for(int i = 0; i < ALPHABETSIZE; ++i) {
 			s += bytesToString(bruteForceResult[i]) + System.lineSeparator();
 		} 
 		//Iterates through all the lines of bruteForceResult and adds each line to a new line in the String s
@@ -80,9 +77,9 @@ public class Decrypt {
 	public static byte[][] caesarBruteForce(byte[] cipher) {
 		
 		
-		byte[][] cipherDecryptions = new byte[256][cipher.length]; 
+		byte[][] cipherDecryptions = new byte[ALPHABETSIZE][cipher.length]; 
 		
-		for (int i = 0; i < 256; ++i) { //Iterates through all possible 256 key values
+		for (int i = 0; i < ALPHABETSIZE; ++i) { //Iterates through all possible 256 key values
 				cipherDecryptions[i] = Encrypt.caesar(cipher, (byte) (i-128)); //Adds the decrypted message to a row in CipherDecryptions. Every row corresponds to a different key.
 		
 	
@@ -108,13 +105,13 @@ public class Decrypt {
 	 * @return the character frequencies as an array of float
 	 */
 	public static float[] computeFrequencies(byte[] cipherText) {
-		float[] cipherFrequencies = new float[256]; //ignoring spaces, but range remains unchanged
+		float[] cipherFrequencies = new float[ALPHABETSIZE]; //ignoring spaces, but range remains unchanged
 		int spaceCounter = 0;
 		
 		for (int i = 0; i < cipherFrequencies.length; ++i) { //Collect frequencies of characters based on byte value index
 			for (int j = 0; j < cipherText.length; ++j) { //Iterate through all characters of the cipherTable
 				if ((cipherText[j] + 128) == i) {
-					if (cipherText[j] != 32) {
+					if (cipherText[j] != Encrypt.SPACE) {
 						++cipherFrequencies[i];
 					}
 					else {
@@ -183,7 +180,7 @@ public class Decrypt {
 			}
 		}
 		int trueByte = maxScalarProductIndex - 128; //Since we stored the charFrequencies as (byte) cipherText[j] + 128, we must subtract the 128 to retrieve the original key
-		int tempKey = (trueByte - 97); 
+		int tempKey = (trueByte - AVALUE); 
 		
 		key = (byte)(tempKey);	//Calculates the absolute value (= distance between 'a'(97) and index)
 		
@@ -201,17 +198,15 @@ public class Decrypt {
 	 * @return the array of possibilities for the clear text
 	 */
 	public static byte[][] xorBruteForce(byte[] cipher) {
+		//Attempt breaking using every possible key (-128 to 127) and user manually reads through them all
+
+        byte[][] cipherDecryptions = new byte[ALPHABETSIZE][cipher.length];
 		
-        byte[][] cipherDecryptions = new byte[256][cipher.length];
-		
-		for (int i = 0; i < 256; ++i) {
+		for (int i = 0; i < ALPHABETSIZE; ++i) {
 				cipherDecryptions[i] = Encrypt.xor(cipher, (byte) (i-128));
 		}
 		
-		
-		//Attempt breaking using every possible key (-128 to 127) and user manually reads through them all
-
-		return cipherDecryptions; //TODO: to be modified
+		return cipherDecryptions;
 	}
 	
 	
@@ -237,8 +232,7 @@ public class Decrypt {
 		int keyLength = vigenereFindKeyLength(cleanCipher);
 		
 		byte[] vigenereKey = Decrypt.vigenereFindKey(cleanCipher, keyLength);
-		
-		
+				
 		return vigenereKey;
 	}
 	
@@ -320,7 +314,7 @@ public class Decrypt {
 			
 			//Convert the dynamic subCipherArray into a static byte[] subCipherText array			
 			byte[] subCipherText = new byte[subCipherArray.size()];
-			
+						
 			for (int k = 0; k < subCipherArray.size(); ++k) {
 				subCipherText[k] = subCipherArray.get(k);
 			}
@@ -351,7 +345,7 @@ public class Decrypt {
 		}
 		
 		for(int i = 0; i < keyLength; ++i) {
-			decoded[i] = (byte) (decoded[i] ^ iv[i]); //TODO: is it not possible to directly use cipher[i] here?
+			decoded[i] = (byte) (decoded[i] ^ iv[i]);
 		}
 		
 		for(int i = keyLength; i < decoded.length; ++i) {
@@ -380,7 +374,7 @@ public class Decrypt {
 			cipherShifted.add(cipher.get(i)); //duplicates the cipher
 		}
 		
-		for (int i = 1; i < cipher.size(); ++i) {
+		for (int i = 1; i < cipher.size(); ++i) { //Iterations of the cipher with cipherShifted
 			for (int j = 1; j < cipher.size() - i; ++j) { //Suffices to check for overlapping sequence areas, not for empty spaces
 				if(cipher.get(j).equals(cipher.get(j+i))) {
 					coincidences[i-1] += 1; //i - 1 = 0 (for initial loop)
@@ -428,6 +422,9 @@ public class Decrypt {
 				}
 			}	
 		}
+		
+		//Indices are increasing, so no need to reorder the localMaximas array as it is automatically arranged
+		
 		return localMaximas;
 	}
 	
@@ -440,9 +437,11 @@ public class Decrypt {
 		Map<Integer, Integer> keyLengths = new HashMap<>();
 		
 		for (int i = 0; i < localMaximas.size() - 1; ++i) {
+			//For all consecutive index pairs of localMaximas (except last pair), performs distance calc
 			if((i + 1) <= localMaximas.size()) {
 				int distance = localMaximas.get(i + 1) - localMaximas.get(i);
 				
+				//Creates an associative table with key: (distance) and value: (freq of key)
 				if (keyLengths.containsKey(distance)) {
 					keyLengths.replace(distance, keyLengths.get(distance) + 1);
 				}
@@ -450,6 +449,7 @@ public class Decrypt {
 					keyLengths.put(distance, 1);
 				}
 			}
+			//For the penultimate & last index of localMaximas, performs distance calc
 			if (i == localMaximas.size() - 1) {
 				int distance = localMaximas.get(i) - localMaximas.get(i - 1);
 				keyLengths.put(distance, +1);
@@ -464,9 +464,9 @@ public class Decrypt {
 		}
 		
 		int tempMax = 0;
-		int keyLength = 0;
+		int keyLength = 1; //We will set this to a default value of 1 (0 causes errors when decrypting vig with inversekey)
 		for (Map.Entry<Integer, Integer> pair : keyLengths.entrySet()) {
-			//Select the most frequent integer
+			//Select the most frequent integer => keyLength
 			if (tempMax < pair.getValue()) {
 				tempMax = pair.getValue();
 				keyLength = pair.getKey();

@@ -19,12 +19,36 @@ public class Main {
 		
 	//---------------------------MAIN---------------------------
 	public static void main(String args[]) {
-		
 	
-		
 		Shell.shellInit();
 	
-	/*	
+		/*
+		String inputMessage = Helper.readStringFromFile("text_three.txt");
+		String messageClean = cleanString(inputMessage);
+		byte[] messageBytes = stringToBytes(messageClean);
+		
+		String key = "23d4g"; //Value shift[0] is 50. KeyLength = 5		
+		byte[] keyBytes = stringToBytes(key);//{(byte)70};//
+
+		for (byte val: keyBytes)
+			System.out.print(val + " ");
+		
+		System.out.println();
+		System.out.println("Original input sanitized : " + messageClean);
+		System.out.println();
+		
+		//Encrypt a vigenere message
+		byte[] result = Encrypt.vigenere(messageBytes, keyBytes);
+		String s = bytesToString(result);
+		System.out.println("Encoded Vigenere: " + s);
+		byte[] vigenereKey = Decrypt.vigenereWithFrequencies(result);
+		
+		System.out.println();
+		System.out.println("Decoded Vigenere: " + Decrypt.breakCipher(s, 1));
+		System.out.println();
+		*/
+		
+		/*	
 	
 		String inputMessage = Helper.readStringFromFile("text_two.txt");
 		String key = "2cF%5"; //Value shift[0] is 50. KeyLength = 5
@@ -41,34 +65,33 @@ public class Main {
 		System.out.println("Original input sanitized : " + messageClean);
 		System.out.println();
 		
+		//----------------------- Encryption Testing-------------------------
+
 		System.out.println("------Caesar------");
 		testCaesar(messageBytes, keyBytes[0]);
-		
-		
 		//testCaesar(Helper.stringToBytes(customMessage), (byte)3);
 		
+		
 		System.out.println("------Vigenere------");
-		
-		
 		testVigenere(messageBytes, keyBytes);
 		byte[] vigenereTempKeyTester = { (byte) 1, (byte) 2, (byte) 3 };
 		testVigenere(Helper.stringToBytes(customMessage), vigenereTempKeyTester);
 
+
 		System.out.println("------XOR------");
-		
-		
-		
-        
 		//testXOR(messageBytes, keyBytes[0]);
 		testXOR(Helper.stringToBytes(customMessage), (byte)7);
+		
 		
 		System.out.println("------One Time Pad------");
 	    testOneTimePad(messageBytes, Encrypt.generatePad(messageBytes.length));
 		testOneTimePad(Helper.stringToBytes(customMessage), Encrypt.generatePad(customMessage.length()));
 		
+		
 		System.out.println("------CBC------");
 		testCBC(messageBytes, Encrypt.generatePad(8));
 		testCBC(Helper.stringToBytes(customMessage), Encrypt.generatePad(4));
+		
 		
 		//----------------------- Decryption Testing-------------------------
 		System.out.println("------Compute Frequencies------");
@@ -140,7 +163,7 @@ public class Main {
 		
 	}
 	
-	
+	//=======================PREVIOUS TESTING METHODS=======================
 	//Run the Encoding and Decoding using the caesar pattern 
 	public static void testCaesar(byte[] string , byte key) {		
 		//Encoding
@@ -288,7 +311,7 @@ public class Main {
 	
 }
 
-//-----------------------Shell-------------------------
+//=======================SHELL CLASS=======================
 
 class Shell {
 	

@@ -13,7 +13,6 @@ public class Encrypt {
 	
 	public static final byte SPACE = 32;
 	
-	public static final int BYTE_RANGE = 256;
 	final static Random rand = new Random();
 	
 	//-----------------------General-------------------------
@@ -41,21 +40,21 @@ public class Encrypt {
 			
 			System.out.println("False input. Please enter a type that is within the range of 0-4: 0 = Caesar; 1 = Vigenere; 2 = XOR; 3 = One-time pad; 4 = CBC;");
 		}
-		if (type == CAESAR) {
+		if (type == CAESAR) { //CAESAR = 0
 			output = bytesToString(caesar(plainText, keyByte)); // By default, space encoding is off for Caesar
-		} else if (type == VIGENERE) {
-			output = bytesToString(vigenere(plainText, keyBytes));
-		} else if (type == XOR) {
+		} else if (type == VIGENERE) { //VIGENERE = 1
+			output = bytesToString(vigenere(plainText, keyBytes)); // By default, space encoding is off for Vigenere
+		} else if (type == XOR) { //XOR = 2
 			output = bytesToString(xor(plainText, keyByte));
 			// By default, space encoding is OFF for XOR
-		} else if (type == ONETIME) {
+		} else if (type == ONETIME) { //ONETIME = 3
 			output = bytesToString(oneTimePad(plainText, keyBytes));
 			// By default, space encoding is ON for Onetimepad
-		} else if (type == CBC) {
+		} else if (type == CBC) { //CBC = 4
 			output = bytesToString(cbc(plainText, keyBytes));
 			// By default, space encoding is ON for CBC
 		}
-		return output; // TODO: to be modified
+		return output;
 	}
 	
 	
@@ -117,23 +116,15 @@ public class Encrypt {
 		
 		for (int i = 0; i < plainTextCopy.length; ++i) {
 			//if spaces should not be encoded, checks for non space characters and shifts by key
-			
-
 			if (spaceEncoder(spaceEncoding, plainTextCopy[i])){ 
 				plainTextCopy[i] = (byte)(plainTextCopy[i] ^ key);
-
-			//if (isNotSpace(spaceEncoding, plainText[i])){ 
-			//	plainText[i] = (byte)(plainText[i] ^ keyModulo(key));
-
-		//	System.out.print(plainText[i] + " ");
-
-		}
-		
-		
+			}
 		}
 		return plainTextCopy;
 		
 	}
+	
+	
 	/**
 	 * Method to encode a byte array using a XOR with a single byte long key
 	 * spaces are not encoded
@@ -164,9 +155,10 @@ public class Encrypt {
 		byte[] plainTextCopy = duplicateArray(plainText);
 		
 		for (int i = 0; i < plainTextCopy.length; ++i) {
-			byte[] plainTextContainer = {plainTextCopy[i]};			
+			byte[] plainTextContainer = {plainTextCopy[i]};	
+			
 			plainTextCopy[i] = caesar(plainTextContainer, keyModulo(keyword[iteratorIndex]), spaceEncoding)[0];
-
+			
 			if (spaceEncoder(spaceEncoding, plainTextCopy[i])) {
 				++iteratorIndex;
 			}
@@ -204,6 +196,7 @@ public class Encrypt {
 	 */
 	public static byte[] oneTimePad(byte[] plainText, byte[] pad) {
 		assert(plainText != null);
+		
 		//Ensure that we aren't manipulating data from the source byte[]
 		byte[] plainTextCopy = duplicateArray(plainText);
 		
@@ -217,8 +210,6 @@ public class Encrypt {
 			byte[] plainTextContainer = {plainTextCopy[i]};			
 			plainTextCopy[i] = xor(plainTextContainer, pad[i])[0];
 		}
-		
-		
 		
 		return plainTextCopy;
 	}
@@ -234,7 +225,7 @@ public class Encrypt {
 	 */
 	public static byte[] cbc(byte[] plainText, byte[] iv) {
 		assert(plainText != null);
-
+		
 		//Ensure that we aren't manipulating data from the source byte[]
 		byte[] plainTextCopy = duplicateArray(plainText);
 		
@@ -244,9 +235,9 @@ public class Encrypt {
 			plainTextCopy[i] = (byte) (plainTextCopy[i] ^ iv[i]);
 		}
 		
-	    for(int i = padSize; i < (plainText.length); ++i) { 
+		for(int i = padSize; i < (plainText.length); ++i) { 
 	    	plainTextCopy[i] = (byte) (plainTextCopy[i] ^ plainTextCopy[i - padSize]); //Encrypts the rest of the message
-	     }	
+	    }
 	     
 		return plainTextCopy;
 	}
@@ -276,21 +267,21 @@ public class Encrypt {
 	 */
 	public static boolean spaceEncoder(boolean spaceEncoding, byte byteValue) {
 		if (!spaceEncoding) {
-			return !(byteValue == (byte)(32));
+			return !(byteValue == (byte)(SPACE));
 		}
 		return true;
 	}
 	
 	/**
-	 * Method used to modulo (%) the key by the BYTE_RANGE which is 256
+	 * Method used to modulo (%) the key by the ALPHABETSIZE which is 256
 	 * @param key is the value that the character(s) will be shifted
 	 */
 	public static byte keyModulo(byte key) {
-		return (byte)(key%BYTE_RANGE);
+		return (byte)(key%Decrypt.ALPHABETSIZE);
 	}
 	
 	/**
-	 * Method used to duplicate the array, to ensure we aren't directly manipulating inputted arrays into Encrypt methods
+	 * Method used to duplicate the array, to ensure we aren't directly manipulating inputed arrays into Encrypt methods
 	 * @param array is the array that should be duplicated
 	 */
 	public static byte[] duplicateArray(byte[] array) {
