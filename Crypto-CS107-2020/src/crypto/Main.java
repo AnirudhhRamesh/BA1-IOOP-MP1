@@ -20,7 +20,9 @@ public class Main {
 	//---------------------------MAIN---------------------------
 	public static void main(String args[]) {
 		
-		Shell.shellInit();
+		Decrypt.breakCipher("Iovbarbara", 1);
+		
+		//Shell.shellInit();
 	
 	/*	
 	
@@ -297,7 +299,7 @@ class Shell {
 	
 	public static void shellInit() { //Displays the welcome text
 		
-		System.out.println("      Welcome to Shell! Please type Help to display all commands.");
+		System.out.println("      Welcome to Shell! Please a valid command or Help to display all commands.");
 				shellMain();
 }
 	
