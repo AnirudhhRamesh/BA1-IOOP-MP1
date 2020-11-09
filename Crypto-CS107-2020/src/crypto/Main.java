@@ -20,9 +20,9 @@ public class Main {
 	//---------------------------MAIN---------------------------
 	public static void main(String args[]) {
 		
-		Decrypt.breakCipher("Iovbarbara", 1);
+	
 		
-		//Shell.shellInit();
+		Shell.shellInit();
 	
 	/*	
 	
