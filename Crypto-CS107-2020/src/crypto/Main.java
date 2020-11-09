@@ -286,6 +286,8 @@ public class Main {
 	
 }
 
+//-----------------------Shell-------------------------
+
 class Shell {
 	
 	static Scanner scan = new Scanner(System.in);
@@ -344,7 +346,7 @@ public static void shellMain() {
 		key = scan.nextLine();
 
 		do {
-			System.out.println("Please type your preffered encryption method [Caesar/Vigenere/Xor]");
+			System.out.println("Please type your preferred encryption method [Caesar/Vigenere/Xor]");
 			method = scan.nextLine();
 
 			if (method.equals("Caesar")) {
@@ -376,7 +378,7 @@ public static void shellMain() {
 		message = scan.nextLine();
 
 		do {
-			System.out.println("Please type your preffered decryption method [Caesar/Vigenere/Xor]");
+			System.out.println("Please type your preferred decryption method [Caesar/Vigenere/Xor]");
 			method = scan.nextLine();
 
 			if (method.equals("Caesar")) {
@@ -391,7 +393,7 @@ public static void shellMain() {
 			}
 		} while (!pass);
 
-		System.out.println("Your encrypted message is: " + decrypted);
+		System.out.println("Your decrypted message is: " + decrypted);
 
 		shellMain();
 		
