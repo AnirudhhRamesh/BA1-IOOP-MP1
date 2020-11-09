@@ -20,7 +20,10 @@ public class Main {
 	//---------------------------MAIN---------------------------
 	public static void main(String args[]) {
 		
-		
+		Shell.shellInit();
+	
+	/*	
+	
 		String inputMessage = Helper.readStringFromFile("text_two.txt");
 		String key = "2cF%5"; //Value shift[0] is 50. KeyLength = 5
 		String customMessage = "bonne journée";
@@ -82,7 +85,7 @@ public class Main {
 		System.out.println("Testing caesar frequencies calculation");
 		//byte test = Decrypt.caesarWithFrequencies(messageBytes); //input a cipher text (instead of clean text
 		
-		// TODO: TO BE COMPLETED
+		*/
 		
 		//----------------------- Caesar Freq. Profilers-------------------------
 		/*
@@ -114,6 +117,7 @@ public class Main {
 		
 		
 		//Test 2: Challenge
+		/*
 		System.out.println("New challenge");
 		System.out.print(Helper.bytesToString(Helper.readBytesFromFile("challenge-encrypted.bin")));
 		byte[] challenge = Helper.readBytesFromFile("challenge-encrypted.bin");
@@ -128,6 +132,9 @@ public class Main {
 		String challengeDecoded = bytesToString(Encrypt.vigenere(challenge, vigenereKey));
 		System.out.println("Decoded knowing the key : " + challengeDecoded);
 		System.out.println();
+		
+		*/
+		
 		
 	}
 	
@@ -289,20 +296,28 @@ class Shell {
 	public static void shellInit() {
 		
 		System.out.println("Welcome to Shell! Please type Help to display all possible commands.");
-		
-		input = scan.next();
-		
-		if(input.equals("Help"))
-				helper();
+				shellMain();
+}
 	
-		if(input.equals("Encrypt"));
-		
-		
-		this is not a command, please type a valid command
-				
-		
-		
-		
+public static void shellMain() {
+
+	input = scan.nextLine();
+
+	
+		if (input.equals("Help"))
+			helper();
+
+		else if (input.equals("Encrypt"))
+			shellEncrypt();
+
+		else if (input.equals("Decrypt"))
+			shellDecrypt();
+		else {
+			System.out.println("This is not a valid command, please type Help to display all valid commands");
+			shellMain();
+		}
+	
+
 	}
 	
 	public static void helper() {
@@ -310,8 +325,79 @@ class Shell {
 		System.out.println("Here are the available commands: ");
 		System.out.println("Type 'Encrypt' if you would like to encrypt a message");
 		System.out.println("Type 'Decrypt if you would like to decrypt a message");
+		shellMain();
 	}
 	
+	public static void shellEncrypt() {
+
+		boolean pass = false;
+		String message = null;
+		String key = null;
+		String method = null;
+		String encrypted = null;
+
+		System.out.println("Please type the message you want to encrypt: ");
+		message = scan.nextLine();
+
+		System.out.println("Please type the key with which you want to encrypt ");
+		
+		key = scan.nextLine();
+
+		do {
+			System.out.println("Please type your preffered encryption method [Caesar/Vigenere/Xor]");
+			method = scan.nextLine();
+
+			if (method.equals("Caesar")) {
+				encrypted = Encrypt.encrypt(message, key, 0);
+				pass = true;
+			} else if (method.equals("Vigenere")) {
+				encrypted = Encrypt.encrypt(message, key, 1);
+				pass = true;
+			} else if (method.equals("Xor")) {
+				encrypted = Encrypt.encrypt(message, key, 2);
+				pass = true;
+			}
+		} while (!pass);
+
+		System.out.println("Your encrypted message is: " + encrypted);
+
+		shellMain();
+
+	}
+
+	public static void shellDecrypt() {
+		
+		boolean pass = false;
+		String message = null;
+		String method = null;
+		String decrypted = null;
+
+		System.out.println("Please type the message you want to decrypt: ");
+		message = scan.nextLine();
+
+		do {
+			System.out.println("Please type your preffered decryption method [Caesar/Vigenere/Xor]");
+			method = scan.nextLine();
+
+			if (method.equals("Caesar")) {
+				decrypted = Decrypt.breakCipher(message, 0);
+				pass = true;
+			} else if (method.equals("Vigenere")) {
+				decrypted = Decrypt.breakCipher(message, 1);
+				pass = true;
+			} else if (method.equals("Xor")) {
+				decrypted = Decrypt.breakCipher(message, 2);
+				pass = true;
+			}
+		} while (!pass);
+
+		System.out.println("Your encrypted message is: " + decrypted);
+
+		shellMain();
+		
+		
+
+	}
 	
 	
 }
