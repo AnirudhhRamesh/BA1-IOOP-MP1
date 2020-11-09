@@ -295,18 +295,18 @@ class Shell {
 	
 	
 	
-	public static void shellInit() {
+	public static void shellInit() { //Displays the welcome text
 		
-		System.out.println("Welcome to Shell! Please type Help to display all possible commands.");
+		System.out.println("      Welcome to Shell! Please type Help to display all commands.");
 				shellMain();
 }
 	
-public static void shellMain() {
+public static void shellMain() { //Main method to start encrypting or decrypting 
 
 	input = scan.nextLine();
 
 	
-		if (input.equals("Help"))
+		if (input.equals("Help")) //Check if the input corresponds to a valid command
 			helper();
 
 		else if (input.equals("Encrypt"))
@@ -315,70 +315,92 @@ public static void shellMain() {
 		else if (input.equals("Decrypt"))
 			shellDecrypt();
 		else {
-			System.out.println("This is not a valid command, please type Help to display all valid commands");
+			System.out.println("      This is not a valid command, please type Help to display all valid commands");
 			shellMain();
 		}
 	
 
 	}
 	
-	public static void helper() {
+	public static void helper() { //Displays all available commands
 		
-		System.out.println("Here are the available commands: ");
-		System.out.println("Type 'Encrypt' if you would like to encrypt a message");
-		System.out.println("Type 'Decrypt if you would like to decrypt a message");
-		shellMain();
+		System.out.println("             Here are the available commands: ");
+		System.out.println("      -Type 'Encrypt' if you would like to encrypt a message");
+		System.out.println("      -Type 'Decrypt' if you would like to decrypt a message");
+		System.out.println("      -Type 'Help' to display available commands");
+		
+		shellMain(); //Restarts Shell so the user can type their command
 	}
 	
-	public static void shellEncrypt() {
+	public static void shellEncrypt() { //This method guides the user to encrypt a message
 
 		boolean pass = false;
-		String message = null;
-		String key = null;
+		String message = " ";
+		String key = " ";
 		String method = null;
 		String encrypted = null;
+		
+		while(message.isBlank()) { //Makes sure the user typed a non-empty string to encrypt
+			System.out.println("      Please type the message you want to encrypt: ");
+			message = scan.nextLine();
+		}
+		
 
-		System.out.println("Please type the message you want to encrypt: ");
-		message = scan.nextLine();
 
-		System.out.println("Please type the key with which you want to encrypt ");
+			while(key.isBlank()) { //Makes sure the user typed a non-empty key to encrypt with
+		System.out.println("      Please type the key with which you want to encrypt ");
 		
 		key = scan.nextLine();
-
-		do {
-			System.out.println("Please type your preferred encryption method [Caesar/Vigenere/Xor]");
-			method = scan.nextLine();
-
-			if (method.equals("Caesar")) {
-				encrypted = Encrypt.encrypt(message, key, 0);
-				pass = true;
-			} else if (method.equals("Vigenere")) {
-				encrypted = Encrypt.encrypt(message, key, 1);
-				pass = true;
-			} else if (method.equals("Xor")) {
-				encrypted = Encrypt.encrypt(message, key, 2);
-				pass = true;
 			}
-		} while (!pass);
+			System.out.println("      Please type your preferred encryption method [Caesar/Vigenere/Xor/Onetime/Cbc]");
 
-		System.out.println("Your encrypted message is: " + encrypted);
+			do { //Checks the user's input and compares it with existing methods to encrypt with
+				
+				method = scan.nextLine();
 
-		shellMain();
+				if (method.equals("Caesar")) {
+					encrypted = Encrypt.encrypt(message, key, 0);
+					pass = true;
+				} else if (method.equals("Vigenere")) {
+					encrypted = Encrypt.encrypt(message, key, 1);
+					pass = true;
+				} else if (method.equals("Xor")) {
+					encrypted = Encrypt.encrypt(message, key, 2);
+					pass = true;
+				} else if (method.equals("Onetime")) {
+					encrypted = Encrypt.encrypt(message, key, 3);
+					pass = true;
+				} else if (method.equals("Cbc")) {
+					encrypted = Encrypt.encrypt(message, key, 4);
+					pass = true;
+				}
+				else if(!pass)
+					System.out.println("      Incorrect method, please type one these methods [Caesar/Vigenere/Xor/Onetime/Cbc]");
+
+			} while (!pass);
+
+		System.out.println("      Your encrypted message is: " + encrypted);
+
+		shellMain(); //Restarts Shell after the program is finished
 
 	}
 
-	public static void shellDecrypt() {
-		
+	public static void shellDecrypt() { //This method guides the user to decrypt a message
+		 
 		boolean pass = false;
-		String message = null;
+		String message = " ";
 		String method = null;
 		String decrypted = null;
 
-		System.out.println("Please type the message you want to decrypt: ");
+		while(message.isBlank()) {
+		System.out.println("      Please type the message you want to decrypt: ");
 		message = scan.nextLine();
-
-		do {
-			System.out.println("Please type your preferred decryption method [Caesar/Vigenere/Xor]");
+		}
+		
+		System.out.println("      Please type your preferred decryption method [Caesar/Vigenere/Xor]");
+		
+		do { //Checks the user's input and compares it with existing methods to decrypt with
+			
 			method = scan.nextLine();
 
 			if (method.equals("Caesar")) {
@@ -391,11 +413,13 @@ public static void shellMain() {
 				decrypted = Decrypt.breakCipher(message, 2);
 				pass = true;
 			}
+			else if(!pass)
+				System.out.println("Incorrect method, please type one these methods [Caesar/Vigenere/Xor]");
 		} while (!pass);
 
-		System.out.println("Your decrypted message is: " + decrypted);
+		System.out.println("      Your decrypted message is: " + decrypted);
 
-		shellMain();
+		shellMain(); //Restarts Shell after the program is finished
 		
 		
 
