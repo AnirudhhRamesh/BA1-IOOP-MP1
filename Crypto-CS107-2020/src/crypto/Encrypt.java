@@ -48,12 +48,7 @@ public class Encrypt {
 			output = bytesToString(xor(plainText, keyByte));
 			// By default, space encoding is OFF for XOR
 		} else if (type == ONETIME) { //ONETIME = 3
-			if (oneTimePad(plainText, keyBytes) != plainText) {
-				output = bytesToString(oneTimePad(plainText, keyBytes));
-			}
-			else {
-				output = "";
-			}
+			output = bytesToString(oneTimePad(plainText, keyBytes));
 			// By default, space encoding is ON for Onetimepad
 		} else if (type == CBC) { //CBC = 4
 			output = bytesToString(cbc(plainText, keyBytes));
