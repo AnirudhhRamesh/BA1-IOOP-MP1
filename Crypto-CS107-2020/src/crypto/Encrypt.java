@@ -28,7 +28,7 @@ public class Encrypt {
 	 */
 	public static String encrypt(String message, String key, int type) {
 
-		String output = null;
+		String output = "";
 	
 		byte[] plainText = Helper.stringToBytes(message);
 		assert (plainText != null);
@@ -48,7 +48,12 @@ public class Encrypt {
 			output = bytesToString(xor(plainText, keyByte));
 			// By default, space encoding is OFF for XOR
 		} else if (type == ONETIME) { //ONETIME = 3
-			output = bytesToString(oneTimePad(plainText, keyBytes));
+			if (oneTimePad(plainText, keyBytes) != plainText) {
+				output = bytesToString(oneTimePad(plainText, keyBytes));
+			}
+			else {
+				output = "";
+			}
 			// By default, space encoding is ON for Onetimepad
 		} else if (type == CBC) { //CBC = 4
 			output = bytesToString(cbc(plainText, keyBytes));
@@ -202,8 +207,9 @@ public class Encrypt {
 		
 		//Verify the pad.length >= plainText.length, else return null
 		if (pad.length < plainTextCopy.length) {
-			System.out.println("Error: Failed OTP encoding. Pad length smaller than string length.");
-			return null;
+			System.out.println("Error: Failed OTP encoding. Pad length smaller than string length. Retry with a padlength >= text length.");
+			byte[] empty = {};
+			return empty; //Returns an empty string
 		}
 		
 		for (int i = 0; i < plainTextCopy.length; ++i) {

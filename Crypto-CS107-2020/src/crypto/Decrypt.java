@@ -24,16 +24,9 @@ public class Decrypt {
 	 * @return the decoded string or the original encoded message if type is not in the list above.
 	 */
 	public static String breakCipher(String cipher, int type) {
-		//The method should be such that if you call it with cipher and type, it will decrypt the message
 
 		byte[] plainText = stringToBytes(cipher);
-		String output = null;
-
-		byte[] keywordInverse = new byte[vigenereWithFrequencies(plainText).length]; //Calculates the inverse keyword for Vigenere
-				
-		for (int i = 0; i < (vigenereWithFrequencies(plainText).length); ++i) {
-			keywordInverse[i] = (byte) (-(vigenereWithFrequencies(plainText)[i]));
-		}
+		String output = "";
 
 		while ((type < 0) || (type > 2))
 			System.out.println("False input. Please enter a type that is within the range of 0-2: 0 = Caesar; 1 = Vigenere; 2 = XOR");
@@ -42,7 +35,7 @@ public class Decrypt {
 			output = bytesToString(Encrypt.caesar(plainText, (byte) (-(caesarWithFrequencies(plainText)))));
 		
 		else if (type == Encrypt.VIGENERE) //VIGENERE = 1
-			output = bytesToString(Encrypt.vigenere(plainText, keywordInverse));
+			output = bytesToString(vigenereWithFrequencies(plainText));
 		
 		else if (type == Encrypt.XOR) //XOR = 2
 			output = arrayToString(xorBruteForce(plainText));
@@ -220,6 +213,7 @@ public class Decrypt {
 	 * @return the byte encoding of the clear text
 	 */
 	public static byte[] vigenereWithFrequencies(byte[] cipher) {
+		assert (cipher.length >= 6);
 		/* Method used:
 		 * 	1. Create an iterator from 0 to 255 (inclusive => 256 values) /
 		 * 	2. Multiply ENGLISHFREQUENCIES with A*0 (It. 0), A*1 (It. 1), ..., A*255 (It. 255) /
@@ -227,13 +221,26 @@ public class Decrypt {
 		 *  4. Find the index of the biggest scalar product out of all scalar products => Error here: always returns 255
 		 *  Distance between charFrequencies[i] and 97 is the key
 		 */
+
+		if (cipher.length <= 1) {
+			//Fixes error where a cipher with length 1 causes error:
+			System.out.println("The inputted text is too small, please use a larger sized cipher");
+			byte[] empty = {};
+			return empty;
+		}
 		
 		List<Byte> cleanCipher = removeSpaces(cipher);
-		int keyLength = vigenereFindKeyLength(cleanCipher);
 		
-		byte[] vigenereKey = Decrypt.vigenereFindKey(cleanCipher, keyLength);
-				
-		return vigenereKey;
+		byte[] vigenereKey = Decrypt.vigenereFindKey(cleanCipher, vigenereFindKeyLength(cleanCipher)); //Returns vigenere-encoding key
+		byte[] keywordInverse = new byte[vigenereKey.length]; //Calculates the inverse keyword for Vigenere
+		
+		for (int i = 0; i < vigenereKey.length; ++i) {
+			keywordInverse[i] = (byte)(-vigenereKey[i]);
+		}
+
+		byte[] decryptedCipher = Encrypt.vigenere(cipher, keywordInverse);
+		
+		return decryptedCipher;
 	}
 	
 	
@@ -296,6 +303,7 @@ public class Decrypt {
 	 * @return the inverse key to decode the Vigenere cipher text
 	 */
 	public static byte[] vigenereFindKey(List<Byte> cipher, int keyLength) {
+		assert (cipher.size() >= 6);
 		/* Method used:
 		 * Recover the key values:
 		 *      -> Divide the cipher by keyLength, into keyLength strings
@@ -393,6 +401,7 @@ public class Decrypt {
 	 * @return the Integer dynamic array containing the indices of all the localMaximas (in ascending index order)
 	 */
 	public static List<Integer> calculateMaximas(List<Byte> cipher, int[] coincidences){
+
 		int maxIndex = (int)Math.ceil(cipher.size()/2); //If cipher.size/2 = 7.5 => Math.ciel returns 8
 		List<Integer> localMaximas = new ArrayList<Integer>(); //stores the indices of local Maximas
 		
